@@ -1,0 +1,50 @@
+amends "pkl:test"
+
+import "../examples/nginx.pkl" as nginx
+
+examples {
+    ["nginx container quadlet"] {
+        nginx
+    }
+}
+
+facts {
+    ["renders unit section"] {
+        nginx.output.text.contains("[Unit]")
+        nginx.output.text.contains("Description=Nginx Web Server Container")
+        nginx.output.text.contains("After=network-online.target")
+    }
+    
+    ["renders container section"] {
+        nginx.output.text.contains("[Container]")
+        nginx.output.text.contains("Image=docker.io/library/nginx:latest")
+        nginx.output.text.contains("ContainerName=nginx")
+        nginx.output.text.contains("PublishPort=80:80")
+        nginx.output.text.contains("PublishPort=443:443")
+        nginx.output.text.contains("Volume=/etc/nginx/conf.d:/etc/nginx/conf.d:ro")
+        nginx.output.text.contains("Pull=missing")
+    }
+    
+    ["renders service section"] {
+        nginx.output.text.contains("[Service]")
+        nginx.output.text.contains("Restart=always")
+        nginx.output.text.contains("RestartSec=5")
+    }
+    
+    ["renders install section"] {
+        nginx.output.text.contains("[Install]")
+        nginx.output.text.contains("WantedBy=multi-user.target")
+    }
+    
+    ["renders health check"] {
+        nginx.output.text.contains("HealthCmd=curl -f http://localhost/ || exit 1")
+        nginx.output.text.contains("HealthInterval=30s")
+        nginx.output.text.contains("HealthTimeout=3s")
+        nginx.output.text.contains("HealthRetries=3")
+    }
+    
+    ["renders environment variables"] {
+        nginx.output.text.contains("Environment=NGINX_HOST=example.com")
+        nginx.output.text.contains("Environment=NGINX_PORT=80")
+    }
+}

@@ -1,0 +1,145 @@
+module declix.podman.Container
+
+extends "@pkl-systemd/Unit.pkl"
+
+unit: UnitSection
+install: InstallSection
+container: ContainerSection
+service: ServiceSection?
+
+// https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html
+local class ContainerSection {
+    // Container image to run
+    image: String?
+    
+    // Container name
+    containerName: String?
+    
+    // Environment variables
+    environment: Mapping<String, String>?
+    
+    // Environment file
+    environmentFile: String?
+    
+    // Expose ports
+    publishPort: (String|Listing<String>)?
+    
+    // Volume mounts
+    volume: (String|Listing<String>)?
+    
+    // Network mode
+    network: String?
+    
+    // Pull policy
+    pull: PullPolicy?
+    
+    // User to run as
+    user: String?
+    
+    // Working directory
+    workingDir: String?
+    
+    // Labels
+    label: Mapping<String, String>?
+    
+    // Annotations
+    annotation: Mapping<String, String>?
+    
+    // Command to run
+    exec: String?
+    
+    // Entry point
+    entrypoint: String?
+    
+    // Resource limits
+    cpus: Float?
+    memory: String?
+    
+    // Security options
+    securityLabelDisable: Boolean?
+    readOnly: Boolean?
+    noNewPrivileges: Boolean?
+    
+    // Additional podman run flags
+    podmanArgs: String?
+    
+    // Health check
+    healthCmd: String?
+    healthInterval: String?
+    healthTimeout: String?
+    healthRetries: UInt?
+    healthStartPeriod: String?
+    
+    // Logging
+    logDriver: String?
+    
+    // Timezone
+    timezone: String?
+    
+    // Secrets
+    secret: (String|Listing<String>)?
+    
+    // Devices
+    device: (String|Listing<String>)?
+    
+    // DNS settings
+    dns: (String|Listing<String>)?
+    dnsOption: (String|Listing<String>)?
+    dnsSearch: (String|Listing<String>)?
+    
+    // Hostname
+    hostname: String?
+    
+    // Add host entries
+    addHost: (String|Listing<String>)?
+    
+    // Capabilities
+    addCapability: (String|Listing<String>)?
+    dropCapability: (String|Listing<String>)?
+    
+    // Ulimits
+    ulimit: (String|Listing<String>)?
+    
+    // Tmpfs mounts
+    tmpfs: (String|Listing<String>)?
+    
+    // Sysctl settings
+    sysctl: Mapping<String, String>?
+    
+    // Group add
+    groupAdd: (String|Listing<String>)?
+    
+    // Userns
+    userNS: String?
+    
+    // PID namespace
+    pidNS: String?
+    
+    // Network aliases
+    networkAlias: (String|Listing<String>)?
+}
+
+// https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html
+local class ServiceSection {
+    // Systemd service options that apply to container units
+    type: ServiceType?
+    remainAfterExit: Boolean?
+    restart: RestartPolicy?
+    restartSec: UInt?
+    timeoutStartSec: UInt?
+    timeoutStopSec: UInt?
+    
+    // Resource control
+    cpuWeight: UInt?
+    cpuQuota: String?
+    memoryMax: String?
+    memoryHigh: String?
+    
+    // Dependencies
+    requires: String?
+    wants: String?
+}
+
+local typealias PullPolicy = "always" | "missing" | "never" | "newer"
+local typealias ServiceType = "simple" | "exec" | "forking" | "oneshot" | "notify"
+local typealias RestartPolicy = "no" | "always" | "on-success" | "on-failure" | "on-abnormal" | "on-abort" | "on-watchdog"

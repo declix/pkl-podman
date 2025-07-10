@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "resolvedDependencies": {
+    "package://pkl.declix.org/pkl-systemd@1": {
+      "type": "remote",
+      "uri": "projectpackage://pkl.declix.org/pkl-systemd@1.0.0",
+      "checksums": {
+        "sha256": "dc3585625c813b1fda27bb3ca13f756f671cbb9715d0c20b160a15f814598c69"
+      }
+    }
+  }
+}

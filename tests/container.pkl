@@ -1,0 +1,218 @@
+amends "pkl:test"
+
+import "../Container.pkl"
+
+local minimal = new Container {
+    unit = new {
+        description = "Test Container"
+    }
+    
+    container = new {
+        image = "alpine:latest"
+    }
+    
+    install = new {
+        wantedBy = "default.target"
+    }
+}
+
+local full = new Container {
+    unit = new {
+        description = "Full Test Container"
+        after = "network-online.target"
+        wants = "network-online.target"
+    }
+    
+    container = new {
+        image = "alpine:latest"
+        containerName = "test"
+        
+        environment {
+            ["FOO"] = "bar"
+            ["BAZ"] = "qux"
+        }
+        
+        publishPort = new Listing {
+            "8080:80"
+            "8443:443"
+        }
+        
+        volume = new Listing {
+            "/host/path:/container/path"
+            "named-volume:/data"
+        }
+        
+        network = "bridge"
+        pull = "always"
+        user = "1000:1000"
+        workingDir = "/app"
+        
+        label {
+            ["app"] = "test"
+            ["version"] = "1.0"
+        }
+        
+        annotation {
+            ["org.example.key"] = "value"
+        }
+        
+        exec = "/bin/sh -c 'echo hello'"
+        entrypoint = "/bin/sh"
+        
+        cpus = 1.5
+        memory = "256M"
+        
+        securityLabelDisable = true
+        readOnly = true
+        noNewPrivileges = true
+        
+        podmanArgs = "--rm"
+        
+        healthCmd = "echo ok"
+        healthInterval = "30s"
+        healthTimeout = "3s"
+        healthRetries = 3
+        healthStartPeriod = "10s"
+        
+        logDriver = "journald"
+        timezone = "America/New_York"
+        
+        secret = new Listing {
+            "my-secret"
+            "other-secret,target=/run/secrets/custom"
+        }
+        
+        device = new Listing {
+            "/dev/fuse"
+        }
+        
+        dns = new Listing {
+            "8.8.8.8"
+            "8.8.4.4"
+        }
+        
+        dnsOption = new Listing {
+            "ndots:2"
+        }
+        
+        dnsSearch = new Listing {
+            "example.com"
+        }
+        
+        hostname = "test-host"
+        
+        addHost = new Listing {
+            "host1:192.168.1.1"
+            "host2:192.168.1.2"
+        }
+        
+        addCapability = new Listing {
+            "NET_ADMIN"
+            "SYS_TIME"
+        }
+        
+        dropCapability = new Listing {
+            "MKNOD"
+        }
+        
+        ulimit = new Listing {
+            "nofile=1024:2048"
+        }
+        
+        tmpfs = new Listing {
+            "/tmp:size=100M"
+        }
+        
+        sysctl {
+            ["net.ipv4.ip_forward"] = "1"
+        }
+        
+        groupAdd = new Listing {
+            "audio"
+            "video"
+        }
+        
+        userNS = "keep-id"
+        pidNS = "host"
+        
+        networkAlias = new Listing {
+            "test-alias"
+            "another-alias"
+        }
+    }
+    
+    service = new {
+        type = "notify"
+        remainAfterExit = true
+        restart = "on-failure"
+        restartSec = 10
+        timeoutStartSec = 300
+        timeoutStopSec = 90
+        
+        cpuWeight = 200
+        cpuQuota = "50%"
+        memoryMax = "512M"
+        memoryHigh = "256M"
+        
+        requires = "network.target"
+        wants = "time-sync.target"
+    }
+    
+    install = new {
+        wantedBy = "multi-user.target"
+    }
+}
+
+facts {
+    ["minimal container renders correctly"] {
+        minimal.output.text.contains("[Unit]")
+        minimal.output.text.contains("Description=Test Container")
+        minimal.output.text.contains("[Container]")
+        minimal.output.text.contains("Image=alpine:latest")
+        minimal.output.text.contains("[Install]")
+        minimal.output.text.contains("WantedBy=default.target")
+    }
+    
+    ["full container renders all sections"] {
+        full.output.text.contains("[Unit]")
+        full.output.text.contains("[Container]")
+        full.output.text.contains("[Service]")
+        full.output.text.contains("[Install]")
+    }
+    
+    ["renders all container options"] {
+        full.output.text.contains("ContainerName=test")
+        full.output.text.contains("Network=bridge")
+        full.output.text.contains("Pull=always")
+        full.output.text.contains("User=1000:1000")
+        full.output.text.contains("WorkingDir=/app")
+        full.output.text.contains("Exec=/bin/sh -c 'echo hello'")
+        full.output.text.contains("Entrypoint=/bin/sh")
+        full.output.text.contains("Cpus=1.5")
+        full.output.text.contains("Memory=256M")
+        full.output.text.contains("SecurityLabelDisable=yes")
+        full.output.text.contains("ReadOnly=yes")
+        full.output.text.contains("NoNewPrivileges=yes")
+        full.output.text.contains("PodmanArgs=--rm")
+        full.output.text.contains("LogDriver=journald")
+        full.output.text.contains("Timezone=America/New_York")
+        full.output.text.contains("Hostname=test-host")
+        full.output.text.contains("UserNS=keep-id")
+        full.output.text.contains("PidNS=host")
+    }
+    
+    ["renders service options"] {
+        full.output.text.contains("Type=notify")
+        full.output.text.contains("RemainAfterExit=yes")
+        full.output.text.contains("Restart=on-failure")
+        full.output.text.contains("RestartSec=10")
+        full.output.text.contains("TimeoutStartSec=300")
+        full.output.text.contains("TimeoutStopSec=90")
+        full.output.text.contains("CpuWeight=200")
+        full.output.text.contains("CpuQuota=50%")
+        full.output.text.contains("MemoryMax=512M")
+        full.output.text.contains("MemoryHigh=256M")
+        full.output.text.contains("Requires=network.target")
+        full.output.text.contains("Wants=time-sync.target")
+    }
+}

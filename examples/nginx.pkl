@@ -1,0 +1,42 @@
+amends "../Container.pkl"
+
+unit = new {
+    description = "Nginx Web Server Container"
+    after = "network-online.target"
+}
+
+container = new {
+    image = "docker.io/library/nginx:latest"
+    containerName = "nginx"
+    
+    publishPort = new Listing {
+        "80:80"
+        "443:443"
+    }
+    
+    volume = new Listing {
+        "/etc/nginx/conf.d:/etc/nginx/conf.d:ro"
+        "/var/www/html:/usr/share/nginx/html:ro"
+    }
+    
+    environment {
+        ["NGINX_HOST"] = "example.com"
+        ["NGINX_PORT"] = "80"
+    }
+    
+    pull = "missing"
+    
+    healthCmd = "curl -f http://localhost/ || exit 1"
+    healthInterval = "30s"
+    healthTimeout = "3s"
+    healthRetries = 3
+}
+
+service = new {
+    restart = "always"
+    restartSec = 5
+}
+
+install = new {
+    wantedBy = "multi-user.target"
+}
