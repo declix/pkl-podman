@@ -1,0 +1,36 @@
+amends "../Build.pkl"
+
+unit = new {
+    description = "Web Application Build"
+    after = "network.target"
+}
+
+build = new {
+    imageTag = "localhost/webapp:latest"
+    file = "/app/Containerfile"
+    setWorkingDirectory = "/app"
+    
+    buildArg {
+        ["NODE_VERSION"] = "18"
+        ["BUILD_ENV"] = "production"
+    }
+    
+    environment {
+        ["BUILDKIT_PROGRESS"] = "plain"
+    }
+    
+    label {
+        ["app"] = "webapp"
+        ["version"] = "1.0.0"
+        ["maintainer"] = "devops@example.com"
+    }
+    
+    pull = "missing"
+    network = "host"
+    rm = true
+    forceRm = true
+}
+
+install = new {
+    wantedBy = "multi-user.target"
+}

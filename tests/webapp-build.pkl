@@ -1,0 +1,9 @@
+amends "pkl:test"
+
+import "../examples/webapp-build.pkl" as webappBuild
+
+examples {
+    ["webapp build quadlet"] {
+        webappBuild.output.text
+    }
+}

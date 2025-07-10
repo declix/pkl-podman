@@ -1,0 +1,9 @@
+amends "pkl:test"
+
+import "../examples/multistage-build.pkl" as multistageBuild
+
+examples {
+    ["multistage build quadlet"] {
+        multistageBuild.output.text
+    }
+}

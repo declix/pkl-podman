@@ -1,0 +1,84 @@
+module declix.podman.Build
+
+extends "@pkl-systemd/Unit.pkl"
+
+unit: UnitSection?
+install: InstallSection?
+build: BuildSection
+
+// https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html
+local class BuildSection {
+    // Image tag for the built image (required)
+    imageTag: String
+    
+    // Containerfile location
+    file: String?
+    
+    // Working directory for build context
+    setWorkingDirectory: String?
+    
+    // Build-time environment variables
+    environment: Mapping<String, String>?
+    
+    // Network configuration for build
+    network: String?
+    
+    // Image pull policy
+    pull: PullPolicy?
+    
+    // Pull retry attempts
+    retry: UInt?
+    
+    // Pull retry delay
+    retryDelay: String?
+    
+    // Build arguments
+    buildArg: Mapping<String, String>?
+    
+    // Labels for the built image
+    label: Mapping<String, String>?
+    
+    // Annotations for the built image
+    annotation: Mapping<String, String>?
+    
+    // Target architecture
+    arch: String?
+    
+    // Architecture variant
+    variant: String?
+    
+    // Platform for multi-arch builds
+    platform: String?
+    
+    // Secret mounts for build
+    secret: (String|Listing<String>)?
+    
+    // SSH agent socket
+    ssh: String?
+    
+    // Disable TLS verification
+    tlsVerify: Boolean?
+    
+    // Force rebuild
+    forceRm: Boolean?
+    
+    // Remove intermediate containers
+    rm: Boolean?
+    
+    // Squash layers
+    squash: Boolean?
+    
+    // Build output format
+    format: String?
+    
+    // Volume mounts during build
+    volume: (String|Listing<String>)?
+    
+    // Build context URL
+    contextDir: String?
+    
+    // Build target stage
+    target: String?
+}
+
+local typealias PullPolicy = "always" | "missing" | "never" | "newer"

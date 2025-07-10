@@ -1,0 +1,51 @@
+amends "../Build.pkl"
+
+unit = new {
+    description = "Multi-stage Application Build"
+    after = "network.target"
+}
+
+build = new {
+    imageTag = "localhost/myapp:production"
+    file = "./docker/Containerfile.prod"
+    setWorkingDirectory = "/workspace"
+    
+    target = "production"
+    platform = "linux/amd64"
+    
+    buildArg {
+        ["GO_VERSION"] = "1.21"
+        ["CGO_ENABLED"] = "0"
+        ["GOOS"] = "linux"
+    }
+    
+    secret = new Listing {
+        "id=github_token,src=/run/secrets/github_token"
+        "id=registry_auth,src=/run/secrets/registry_auth"
+    }
+    
+    volume = new Listing {
+        "/var/cache/go:/go/pkg/mod:Z"
+        "/var/cache/build:/root/.cache:Z"
+    }
+    
+    label {
+        ["app"] = "myapp"
+        ["tier"] = "backend"
+        ["build-type"] = "production"
+    }
+    
+    annotation {
+        ["org.opencontainers.image.source"] = "https://github.com/example/myapp"
+        ["org.opencontainers.image.documentation"] = "https://docs.example.com/myapp"
+    }
+    
+    pull = "always"
+    squash = true
+    rm = true
+    tlsVerify = true
+}
+
+install = new {
+    wantedBy = "multi-user.target"
+}

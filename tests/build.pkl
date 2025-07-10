@@ -1,0 +1,75 @@
+amends "pkl:test"
+
+import "../Build.pkl"
+
+local fullBuild = new Build {
+    unit = new {
+        description = "Test Build"
+        after = "network.target"
+    }
+    
+    build = new {
+        imageTag = "localhost/test:latest"
+        file = "/app/Containerfile"
+        setWorkingDirectory = "/app"
+        network = "host"
+        pull = "always"
+        retry = 3
+        retryDelay = "5s"
+        
+        buildArg {
+            ["NODE_VERSION"] = "18"
+            ["ENV"] = "test"
+        }
+        
+        environment {
+            ["BUILDKIT_PROGRESS"] = "plain"
+            ["DOCKER_BUILDKIT"] = "1"
+        }
+        
+        label {
+            ["app"] = "test"
+            ["version"] = "1.0.0"
+        }
+        
+        annotation {
+            ["org.example.key"] = "value"
+        }
+        
+        secret = new Listing {
+            "id=token,src=/run/secrets/token"
+        }
+        
+        volume = new Listing {
+            "/cache:/cache:Z"
+        }
+        
+        arch = "amd64"
+        target = "production"
+        rm = true
+        forceRm = true
+        squash = false
+        tlsVerify = true
+    }
+    
+    install = new {
+        wantedBy = "multi-user.target"
+    }
+}
+
+local simpleBuild = new Build {
+    build = new {
+        imageTag = "localhost/simple:latest"
+        file = "./Containerfile"
+    }
+}
+
+examples {
+    ["full build quadlet"] {
+        fullBuild.output.text
+    }
+    
+    ["simple build quadlet"] {
+        simpleBuild.output.text
+    }
+}

@@ -1,0 +1,28 @@
+examples {
+  ["webapp build quadlet"] {
+    """
+    [Unit]
+    After=network.target
+    Description=Web Application Build
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Build]
+    ImageTag=localhost/webapp:latest
+    File=/app/Containerfile
+    SetWorkingDirectory=/app
+    Environment=BUILDKIT_PROGRESS=plain
+    Network=host
+    Pull=missing
+    BuildArg=NODE_VERSION=18
+    BuildArg=BUILD_ENV=production
+    Label=app=webapp
+    Label=version=1.0.0
+    Label=maintainer=devops@example.com
+    ForceRm=yes
+    Rm=yes
+    
+    """
+  }
+}

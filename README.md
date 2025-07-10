@@ -152,6 +152,50 @@ systemctl --user daemon-reload
 systemctl --user start app-net.service
 ```
 
+## Builds
+
+Define Podman image builds using build quadlet files:
+
+```pkl
+amends "package://pkl.declix.org/pkl-podman@1.0.0/Build.pkl"
+
+unit = new {
+    description = "Web Application Build"
+    after = "network.target"
+}
+
+build = new {
+    imageTag = "localhost/webapp:latest"
+    file = "/app/Containerfile"
+    setWorkingDirectory = "/app"
+    
+    buildArg {
+        ["NODE_VERSION"] = "18"
+        ["BUILD_ENV"] = "production"
+    }
+    
+    label {
+        ["app"] = "webapp"
+        ["version"] = "1.0.0"
+    }
+    
+    pull = "missing"
+    network = "host"
+}
+
+install = new {
+    wantedBy = "multi-user.target"
+}
+```
+
+Build and manage the image:
+
+```bash
+pkl eval webapp-build.pkl > ~/.config/containers/systemd/webapp.build
+systemctl --user daemon-reload
+systemctl --user start webapp-build.service
+```
+
 ## Examples
 
 See the `examples/` directory for configurations:
@@ -168,6 +212,10 @@ See the `examples/` directory for configurations:
 **Network quadlets:**
 - `app-network.pkl` - Application network with custom subnet
 - `isolated-network.pkl` - Internal network with IPv6 and custom DNS
+
+**Build quadlets:**
+- `webapp-build.pkl` - Web application build with build args and labels
+- `multistage-build.pkl` - Multi-stage build with secrets and volume caching
 
 ## Quadlet File Locations
 
@@ -188,7 +236,7 @@ This project depends on:
 
 ## Quadlet Types
 
-This package supports three types of Podman quadlets:
+This package supports four types of Podman quadlets:
 
 ### Container Quadlets (.container)
 
@@ -220,6 +268,16 @@ Network quadlet files define custom networks:
 - `[Install]` - Systemd installation directives
 
 Network services ensure the network exists before containers that depend on it start.
+
+### Build Quadlets (.build)
+
+Build quadlet files define container image builds:
+
+- `[Unit]` - Standard systemd unit metadata
+- `[Build]` - Podman build configuration
+- `[Install]` - Systemd installation directives
+
+Build services ensure container images are built with proper caching and dependency management.
 
 ## Testing
 
