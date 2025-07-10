@@ -1,0 +1,22 @@
+amends "../Network.pkl"
+
+unit = new {
+    description = "Application Network"
+    after = "network.target"
+}
+
+network = new {
+    networkName = "app-net"
+    driver = "bridge"
+    subnet = "10.88.0.0/16"
+    gateway = "10.88.0.1"
+    
+    label {
+        ["app"] = "myapp"
+        ["environment"] = "production"
+    }
+}
+
+install = new {
+    wantedBy = "multi-user.target"
+}

@@ -1,0 +1,9 @@
+amends "pkl:test"
+
+import "../examples/app-network.pkl" as appNetwork
+
+examples {
+    ["app network quadlet"] {
+        appNetwork.output.text
+    }
+}

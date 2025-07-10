@@ -1,0 +1,27 @@
+examples {
+  ["isolated network quadlet"] {
+    """
+    [Unit]
+    After=network.target
+    Description=Isolated Internal Network
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Network]
+    NetworkName=isolated-net
+    Driver=bridge
+    Subnet=172.20.0.0/24
+    Dns=172.20.0.1
+    Dns=8.8.8.8
+    Internal=yes
+    Ipv6=yes
+    Gateway=172.20.0.1
+    Label=tier=isolated
+    Label=security=high
+    Option=com.docker.network.bridge.name=isolated0
+    Option=com.docker.network.driver.mtu=1450
+    
+    """
+  }
+}

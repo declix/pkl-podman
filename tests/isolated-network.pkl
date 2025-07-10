@@ -1,0 +1,9 @@
+amends "pkl:test"
+
+import "../examples/isolated-network.pkl" as isolatedNetwork
+
+examples {
+    ["isolated network quadlet"] {
+        isolatedNetwork.output.text
+    }
+}

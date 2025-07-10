@@ -1,0 +1,49 @@
+module declix.podman.Network
+
+extends "@pkl-systemd/Unit.pkl"
+
+unit: UnitSection?
+install: InstallSection?
+network: NetworkSection
+
+// https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html
+local class NetworkSection {
+    // Network name
+    networkName: String?
+    
+    // Network driver
+    driver: String?
+    
+    // Network subnet in CIDR notation
+    subnet: String?
+    
+    // DNS servers
+    dns: (String|Listing<String>)?
+    
+    // Restrict external network access
+    internal: Boolean?
+    
+    // Enable IPv6 networking
+    ipv6: Boolean?
+    
+    // Delete network when service stops
+    networkDeleteOnStop: Boolean?
+    
+    // Gateway address
+    gateway: String?
+    
+    // IP range for allocation
+    ipRange: String?
+    
+    // IPAM driver
+    ipamDriver: String?
+    
+    // Labels
+    label: Mapping<String, String>?
+    
+    // Driver options
+    option: (String|Listing<String>)?
+    
+    // Disable DNS resolution
+    disableDNS: Boolean?
+}

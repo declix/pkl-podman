@@ -1,0 +1,56 @@
+amends "pkl:test"
+
+import "../Network.pkl"
+
+local fullNetwork = new Network {
+    unit = new {
+        description = "Test Network"
+        after = "network.target"
+    }
+    
+    network = new {
+        networkName = "test-net"
+        driver = "bridge"
+        subnet = "192.168.100.0/24"
+        gateway = "192.168.100.1"
+        ipv6 = true
+        internal = false
+        disableDNS = false
+        
+        dns = new Listing {
+            "192.168.100.1"
+            "8.8.8.8"
+        }
+        
+        option = new Listing {
+            "com.docker.network.bridge.name=testbr0"
+            "com.docker.network.driver.mtu=1500"
+        }
+        
+        label {
+            ["app"] = "test"
+            ["environment"] = "development"
+        }
+    }
+    
+    install = new {
+        wantedBy = "multi-user.target"
+    }
+}
+
+local simpleNetwork = new Network {
+    network = new {
+        networkName = "simple-net"
+        driver = "bridge"
+    }
+}
+
+examples {
+    ["full network quadlet"] {
+        fullNetwork.output.text
+    }
+    
+    ["simple network quadlet"] {
+        simpleNetwork.output.text
+    }
+}

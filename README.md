@@ -115,6 +115,43 @@ systemctl --user daemon-reload
 systemctl --user start postgres-data.service
 ```
 
+## Networks
+
+Define Podman networks using network quadlet files:
+
+```pkl
+amends "package://pkl.declix.org/pkl-podman@1.0.0/Network.pkl"
+
+unit = new {
+    description = "Application Network"
+    after = "network.target"
+}
+
+network = new {
+    networkName = "app-net"
+    driver = "bridge"
+    subnet = "10.88.0.0/16"
+    gateway = "10.88.0.1"
+    
+    label {
+        ["app"] = "myapp"
+        ["environment"] = "production"
+    }
+}
+
+install = new {
+    wantedBy = "multi-user.target"
+}
+```
+
+Generate and use the network:
+
+```bash
+pkl eval app-network.pkl > ~/.config/containers/systemd/app-net.network
+systemctl --user daemon-reload
+systemctl --user start app-net.service
+```
+
 ## Examples
 
 See the `examples/` directory for configurations:
@@ -127,6 +164,10 @@ See the `examples/` directory for configurations:
 **Volume quadlets:**
 - `postgres-volume.pkl` - Database storage volume
 - `shared-volume.pkl` - Shared application volume with tmpfs
+
+**Network quadlets:**
+- `app-network.pkl` - Application network with custom subnet
+- `isolated-network.pkl` - Internal network with IPv6 and custom DNS
 
 ## Quadlet File Locations
 
@@ -147,7 +188,7 @@ This project depends on:
 
 ## Quadlet Types
 
-This package supports two types of Podman quadlets:
+This package supports three types of Podman quadlets:
 
 ### Container Quadlets (.container)
 
@@ -169,6 +210,16 @@ Volume quadlet files define persistent storage:
 - `[Install]` - Systemd installation directives
 
 Volume services ensure the volume exists before containers that depend on it start.
+
+### Network Quadlets (.network)
+
+Network quadlet files define custom networks:
+
+- `[Unit]` - Standard systemd unit metadata
+- `[Network]` - Podman network configuration
+- `[Install]` - Systemd installation directives
+
+Network services ensure the network exists before containers that depend on it start.
 
 ## Testing
 

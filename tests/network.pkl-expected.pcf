@@ -1,0 +1,36 @@
+examples {
+  ["full network quadlet"] {
+    """
+    [Unit]
+    After=network.target
+    Description=Test Network
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Network]
+    NetworkName=test-net
+    Driver=bridge
+    Subnet=192.168.100.0/24
+    Dns=192.168.100.1
+    Dns=8.8.8.8
+    Internal=no
+    Ipv6=yes
+    Gateway=192.168.100.1
+    Label=app=test
+    Label=environment=development
+    Option=com.docker.network.bridge.name=testbr0
+    Option=com.docker.network.driver.mtu=1500
+    DisableDNS=no
+    
+    """
+  }
+  ["simple network quadlet"] {
+    """
+    [Network]
+    NetworkName=simple-net
+    Driver=bridge
+    
+    """
+  }
+}

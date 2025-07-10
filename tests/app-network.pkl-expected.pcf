@@ -1,0 +1,21 @@
+examples {
+  ["app network quadlet"] {
+    """
+    [Unit]
+    After=network.target
+    Description=Application Network
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Network]
+    NetworkName=app-net
+    Driver=bridge
+    Subnet=10.88.0.0/16
+    Gateway=10.88.0.1
+    Label=app=myapp
+    Label=environment=production
+    
+    """
+  }
+}
