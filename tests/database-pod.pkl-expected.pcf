@@ -1,0 +1,47 @@
+examples {
+  ["database pod quadlet"] {
+    """
+    [Unit]
+    After=network.target
+    Description=Database Pod with Security
+    Requires=network.target
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Pod]
+    PodName=database-cluster
+    Network=db-network
+    PublishPort=5432:5432
+    PublishPort=6379:6379
+    Dns=10.0.0.1
+    DnsSearch=internal.example.com
+    DnsSearch=db.example.com
+    Hostname=db-cluster.internal
+    ExitPolicy=continue
+    Volume=postgres-data:/var/lib/postgresql/data:Z
+    Volume=redis-data:/data:Z
+    Volume=/etc/database/config:/etc/config:ro
+    UserNS=keep-id
+    GidMap=0:100000:65536
+    UidMap=0:100000:65536
+    NetworkAlias=postgres.db
+    NetworkAlias=redis.db
+    NetworkAlias=primary.db
+    SecurityLabelType=container_t
+    SecurityLabelDisable=no
+    Label=app=database
+    Label=tier=data
+    Label=security=high
+    Label=backup=enabled
+    Annotation=backup.schedule=0 2 * * *
+    Annotation=monitoring.enabled=true
+    ShareNet=yes
+    ShareIPC=no
+    ShareUTS=yes
+    SharePID=no
+    InfraImage=registry.redhat.io/ubi8/pause:latest
+    
+    """
+  }
+}

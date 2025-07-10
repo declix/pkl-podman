@@ -196,6 +196,52 @@ systemctl --user daemon-reload
 systemctl --user start webapp-build.service
 ```
 
+## Pods
+
+Define Podman pods using pod quadlet files:
+
+```pkl
+amends "package://pkl.declix.org/pkl-podman@1.0.0/Pod.pkl"
+
+unit = new {
+    description = "Web Application Pod"
+    after = "network.target"
+}
+
+pod = new {
+    podName = "webapp"
+    network = "bridge"
+    
+    publishPort = new Listing {
+        "8080:80"
+        "8443:443"
+    }
+    
+    hostname = "webapp.local"
+    exitPolicy = "stop"
+    
+    label {
+        ["app"] = "webapp"
+        ["tier"] = "web"
+    }
+    
+    shareNet = true
+    shareIPC = true
+}
+
+install = new {
+    wantedBy = "multi-user.target"
+}
+```
+
+Create and manage the pod:
+
+```bash
+pkl eval web-pod.pkl > ~/.config/containers/systemd/webapp.pod
+systemctl --user daemon-reload
+systemctl --user start webapp-pod.service
+```
+
 ## Examples
 
 See the `examples/` directory for configurations:
@@ -217,6 +263,10 @@ See the `examples/` directory for configurations:
 - `webapp-build.pkl` - Web application build with build args and labels
 - `multistage-build.pkl` - Multi-stage build with secrets and volume caching
 
+**Pod quadlets:**
+- `web-pod.pkl` - Web application pod with shared networking
+- `database-pod.pkl` - Database cluster pod with security and user namespaces
+
 ## Quadlet File Locations
 
 Podman looks for quadlet files in these locations:
@@ -236,7 +286,7 @@ This project depends on:
 
 ## Quadlet Types
 
-This package supports four types of Podman quadlets:
+This package supports five types of Podman quadlets:
 
 ### Container Quadlets (.container)
 
@@ -278,6 +328,16 @@ Build quadlet files define container image builds:
 - `[Install]` - Systemd installation directives
 
 Build services ensure container images are built with proper caching and dependency management.
+
+### Pod Quadlets (.pod)
+
+Pod quadlet files define multi-container pods:
+
+- `[Unit]` - Standard systemd unit metadata
+- `[Pod]` - Podman pod configuration
+- `[Install]` - Systemd installation directives
+
+Pod services create and manage Podman pods that can contain multiple containers sharing resources.
 
 ## Testing
 

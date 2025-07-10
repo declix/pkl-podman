@@ -1,0 +1,9 @@
+amends "pkl:test"
+
+import "../examples/database-pod.pkl" as databasePod
+
+examples {
+    ["database pod quadlet"] {
+        databasePod.output.text
+    }
+}

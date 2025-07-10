@@ -1,0 +1,79 @@
+module declix.podman.Pod
+
+extends "@pkl-systemd/Unit.pkl"
+
+unit: UnitSection?
+install: InstallSection?
+pod: PodSection
+
+// https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html
+local class PodSection {
+    // Pod name
+    podName: String?
+    
+    // Network configuration
+    network: String?
+    
+    // Expose ports from the pod
+    publishPort: (String|Listing<String>)?
+    
+    // DNS servers
+    dns: (String|Listing<String>)?
+    
+    // DNS options
+    dnsOption: (String|Listing<String>)?
+    
+    // DNS search domains
+    dnsSearch: (String|Listing<String>)?
+    
+    // Hostname for containers in the pod
+    hostname: String?
+    
+    // Exit policy when last container exits
+    exitPolicy: ExitPolicy?
+    
+    // Volume mounts for the pod
+    volume: (String|Listing<String>)?
+    
+    // User namespace mapping
+    userNS: String?
+    
+    // Group ID mapping
+    gidMap: (String|Listing<String>)?
+    
+    // User ID mapping
+    uidMap: (String|Listing<String>)?
+    
+    // Network aliases
+    networkAlias: (String|Listing<String>)?
+    
+    // Add host entries
+    addHost: (String|Listing<String>)?
+    
+    // Security labels
+    securityLabelType: String?
+    securityLabelLevel: String?
+    securityLabelDisable: Boolean?
+    
+    // Labels for the pod
+    label: Mapping<String, String>?
+    
+    // Annotations for the pod
+    annotation: Mapping<String, String>?
+    
+    // Pod-specific options
+    podmanArgs: String?
+    
+    // Share namespaces
+    shareNet: Boolean?
+    shareIPC: Boolean?
+    shareUTS: Boolean?
+    sharePID: Boolean?
+    
+    // Infra container configuration
+    infraImage: String?
+    infraCommand: String?
+    infraName: String?
+}
+
+local typealias ExitPolicy = "continue" | "stop"

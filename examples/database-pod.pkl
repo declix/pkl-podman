@@ -1,0 +1,79 @@
+amends "../Pod.pkl"
+
+unit = new {
+    description = "Database Pod with Security"
+    after = "network.target"
+    requires = "network.target"
+}
+
+pod = new {
+    podName = "database-cluster"
+    network = "db-network"
+    
+    publishPort = new Listing {
+        "5432:5432"
+        "6379:6379"
+    }
+    
+    hostname = "db-cluster.internal"
+    exitPolicy = "continue"
+    
+    // Custom DNS configuration
+    dns = "10.0.0.1"
+    dnsSearch = new Listing {
+        "internal.example.com"
+        "db.example.com"
+    }
+    
+    // User namespace mapping for security
+    userNS = "keep-id"
+    uidMap = new Listing {
+        "0:100000:65536"
+    }
+    gidMap = new Listing {
+        "0:100000:65536"
+    }
+    
+    // Persistent volumes
+    volume = new Listing {
+        "postgres-data:/var/lib/postgresql/data:Z"
+        "redis-data:/data:Z"
+        "/etc/database/config:/etc/config:ro"
+    }
+    
+    // Network aliases for service discovery
+    networkAlias = new Listing {
+        "postgres.db"
+        "redis.db"
+        "primary.db"
+    }
+    
+    // Security configuration
+    securityLabelDisable = false
+    securityLabelType = "container_t"
+    
+    label {
+        ["app"] = "database"
+        ["tier"] = "data"
+        ["security"] = "high"
+        ["backup"] = "enabled"
+    }
+    
+    annotation {
+        ["backup.schedule"] = "0 2 * * *"
+        ["monitoring.enabled"] = "true"
+    }
+    
+    // Share specific namespaces
+    shareNet = true
+    shareIPC = false
+    shareUTS = true
+    sharePID = false
+    
+    // Custom infra container
+    infraImage = "registry.redhat.io/ubi8/pause:latest"
+}
+
+install = new {
+    wantedBy = "multi-user.target"
+}

@@ -1,0 +1,42 @@
+amends "../Pod.pkl"
+
+unit = new {
+    description = "Web Application Pod"
+    after = "network.target"
+}
+
+pod = new {
+    podName = "webapp"
+    network = "bridge"
+    
+    publishPort = new Listing {
+        "8080:80"
+        "8443:443"
+    }
+    
+    hostname = "webapp.local"
+    exitPolicy = "stop"
+    
+    dns = new Listing {
+        "8.8.8.8"
+        "8.8.4.4"
+    }
+    
+    volume = new Listing {
+        "/var/log/webapp:/var/log:Z"
+        "/etc/ssl/certs:/etc/ssl/certs:ro"
+    }
+    
+    label {
+        ["app"] = "webapp"
+        ["tier"] = "web"
+        ["environment"] = "production"
+    }
+    
+    shareNet = true
+    shareIPC = true
+}
+
+install = new {
+    wantedBy = "multi-user.target"
+}
