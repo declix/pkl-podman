@@ -1,0 +1,50 @@
+examples {
+  ["microservices kube quadlet"] {
+    """
+    [Unit]
+    After=network.target
+    After=webapp-network.service
+    Description=Microservices Stack
+    Requires=webapp-network.service
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Kube]
+    Yaml=/app/k8s/microservices.yaml
+    AutoUpdate=local
+    ConfigMap=/app/k8s/config/app-config.yaml
+    ConfigMap=/app/k8s/config/database-config.yaml
+    ConfigMap=/app/k8s/secrets/api-keys.yaml
+    Network=microservices
+    PublishPort=3000:3000
+    PublishPort=3001:3001
+    PublishPort=3002:3002
+    PublishPort=9090:9090
+    ExitCodePropagation=all
+    UserNS=auto
+    GidMap=0:100000:65536
+    UidMap=0:100000:65536
+    SecurityLabelType=container_t
+    SecurityLabelDisable=no
+    Label=app=microservices
+    Label=stack=full
+    Label=tier=production
+    Label=monitoring=enabled
+    Annotation=app.kubernetes.io/name=microservices-stack
+    Annotation=app.kubernetes.io/version=2.1.0
+    Annotation=app.kubernetes.io/component=backend
+    Annotation=monitoring.coreos.com/scrape=true
+    Volume=postgres-data:/var/lib/postgresql/data:Z
+    Volume=redis-data:/data:Z
+    Volume=/app/logs:/var/log/app:Z
+    Volume=/app/uploads:/uploads:Z
+    LogDriver=k8s-file
+    LogOpt=path=/var/log/pods
+    LogOpt=max-size=100m
+    DownTimeout=60
+    SetWorkingDirectory=/app/k8s
+    
+    """
+  }
+}

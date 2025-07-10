@@ -1,0 +1,9 @@
+amends "pkl:test"
+
+import "../examples/webapp-kube.pkl" as webappKube
+
+examples {
+    ["webapp kube quadlet"] {
+        webappKube.output.text
+    }
+}

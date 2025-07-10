@@ -242,6 +242,55 @@ systemctl --user daemon-reload
 systemctl --user start webapp-pod.service
 ```
 
+## Kubernetes
+
+Deploy Kubernetes YAML files using Kubernetes quadlet files:
+
+```pkl
+amends "package://pkl.declix.org/pkl-podman@1.0.0/Kube.pkl"
+
+unit = new {
+    description = "Web Application Kubernetes Deployment"
+    after = "network.target"
+}
+
+kube = new {
+    yaml = "/etc/kubernetes/webapp/deployment.yaml"
+    autoUpdate = "registry"
+    
+    configMap = new Listing {
+        "/etc/kubernetes/webapp/configmap.yaml"
+        "/etc/kubernetes/webapp/secrets.yaml"
+    }
+    
+    network = "webapp-net"
+    
+    publishPort = new Listing {
+        "8080:80"
+        "8443:443"
+    }
+    
+    exitCodePropagation = "any"
+    
+    label {
+        ["app"] = "webapp"
+        ["deployment"] = "kubernetes"
+    }
+}
+
+install = new {
+    wantedBy = "multi-user.target"
+}
+```
+
+Deploy and manage Kubernetes resources:
+
+```bash
+pkl eval webapp-kube.pkl > ~/.config/containers/systemd/webapp.kube
+systemctl --user daemon-reload
+systemctl --user start webapp-kube.service
+```
+
 ## Examples
 
 See the `examples/` directory for configurations:
@@ -267,6 +316,10 @@ See the `examples/` directory for configurations:
 - `web-pod.pkl` - Web application pod with shared networking
 - `database-pod.pkl` - Database cluster pod with security and user namespaces
 
+**Kubernetes quadlets:**
+- `webapp-kube.pkl` - Web application Kubernetes deployment with ConfigMaps
+- `microservices-kube.pkl` - Complex microservices stack with full configuration
+
 ## Quadlet File Locations
 
 Podman looks for quadlet files in these locations:
@@ -286,7 +339,7 @@ This project depends on:
 
 ## Quadlet Types
 
-This package supports five types of Podman quadlets:
+This package supports six types of Podman quadlets:
 
 ### Container Quadlets (.container)
 
@@ -338,6 +391,16 @@ Pod quadlet files define multi-container pods:
 - `[Install]` - Systemd installation directives
 
 Pod services create and manage Podman pods that can contain multiple containers sharing resources.
+
+### Kubernetes Quadlets (.kube)
+
+Kubernetes quadlet files deploy Kubernetes YAML manifests:
+
+- `[Unit]` - Standard systemd unit metadata
+- `[Kube]` - Kubernetes deployment configuration
+- `[Install]` - Systemd installation directives
+
+Kubernetes services use `podman kube play` to deploy and manage Kubernetes resources with systemd integration.
 
 ## Testing
 

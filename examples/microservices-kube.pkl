@@ -1,0 +1,80 @@
+amends "../Kube.pkl"
+
+unit = new {
+    description = "Microservices Stack"
+    after = new Listing {
+        "network.target"
+        "webapp-network.service"
+    }
+    requires = "webapp-network.service"
+}
+
+kube = new {
+    yaml = "/app/k8s/microservices.yaml"
+    autoUpdate = "local"
+    
+    configMap = new Listing {
+        "/app/k8s/config/app-config.yaml"
+        "/app/k8s/config/database-config.yaml"
+        "/app/k8s/secrets/api-keys.yaml"
+    }
+    
+    network = "microservices"
+    
+    publishPort = new Listing {
+        "3000:3000"   // API Gateway
+        "3001:3001"   // User Service
+        "3002:3002"   // Order Service
+        "9090:9090"   // Prometheus
+    }
+    
+    exitCodePropagation = "all"
+    setWorkingDirectory = "/app/k8s"
+    
+    // User namespace for security
+    userNS = "auto"
+    uidMap = new Listing {
+        "0:100000:65536"
+    }
+    gidMap = new Listing {
+        "0:100000:65536"
+    }
+    
+    // Persistent volumes
+    volume = new Listing {
+        "postgres-data:/var/lib/postgresql/data:Z"
+        "redis-data:/data:Z"
+        "/app/logs:/var/log/app:Z"
+        "/app/uploads:/uploads:Z"
+    }
+    
+    // Security configuration
+    securityLabelDisable = false
+    securityLabelType = "container_t"
+    
+    label {
+        ["app"] = "microservices"
+        ["stack"] = "full"
+        ["tier"] = "production"
+        ["monitoring"] = "enabled"
+    }
+    
+    annotation {
+        ["app.kubernetes.io/name"] = "microservices-stack"
+        ["app.kubernetes.io/version"] = "2.1.0"
+        ["app.kubernetes.io/component"] = "backend"
+        ["monitoring.coreos.com/scrape"] = "true"
+    }
+    
+    logDriver = "k8s-file"
+    logOpt = new Listing {
+        "path=/var/log/pods"
+        "max-size=100m"
+    }
+    
+    downTimeout = 60
+}
+
+install = new {
+    wantedBy = "multi-user.target"
+}

@@ -1,0 +1,83 @@
+amends "pkl:test"
+
+import "../Kube.pkl"
+
+local fullKube = new Kube {
+    unit = new {
+        description = "Test Kubernetes Deployment"
+        after = "network.target"
+    }
+    
+    kube = new {
+        yaml = "/app/k8s/test.yaml"
+        autoUpdate = "registry"
+        
+        configMap = new Listing {
+            "/app/k8s/config.yaml"
+            "/app/k8s/secrets.yaml"
+        }
+        
+        network = "test-net"
+        
+        publishPort = new Listing {
+            "8080:80"
+            "9090:9090"
+        }
+        
+        exitCodePropagation = "any"
+        workingDirectory = "/app/k8s"
+        setWorkingDirectory = "/app"
+        
+        userNS = "auto"
+        uidMap = new Listing {
+            "0:100000:65536"
+        }
+        gidMap = new Listing {
+            "0:100000:65536"
+        }
+        
+        securityLabelDisable = false
+        securityLabelType = "container_t"
+        
+        volume = new Listing {
+            "/var/log/test:/var/log:Z"
+            "/data:/data:Z"
+        }
+        
+        label {
+            ["app"] = "test"
+            ["environment"] = "testing"
+        }
+        
+        annotation {
+            ["test.key"] = "test.value"
+        }
+        
+        logDriver = "journald"
+        logOpt = new Listing {
+            "tag=test-app"
+        }
+        
+        downTimeout = 30
+    }
+    
+    install = new {
+        wantedBy = "multi-user.target"
+    }
+}
+
+local simpleKube = new Kube {
+    kube = new {
+        yaml = "/simple/app.yaml"
+    }
+}
+
+examples {
+    ["full kube quadlet"] {
+        fullKube.output.text
+    }
+    
+    ["simple kube quadlet"] {
+        simpleKube.output.text
+    }
+}

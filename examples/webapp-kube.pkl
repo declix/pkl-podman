@@ -1,0 +1,49 @@
+amends "../Kube.pkl"
+
+unit = new {
+    description = "Web Application Kubernetes Deployment"
+    after = "network.target"
+}
+
+kube = new {
+    yaml = "/etc/kubernetes/webapp/deployment.yaml"
+    autoUpdate = "registry"
+    
+    configMap = new Listing {
+        "/etc/kubernetes/webapp/configmap.yaml"
+        "/etc/kubernetes/webapp/secrets.yaml"
+    }
+    
+    network = "webapp-net"
+    
+    publishPort = new Listing {
+        "8080:80"
+        "8443:443"
+    }
+    
+    exitCodePropagation = "any"
+    workingDirectory = "/etc/kubernetes/webapp"
+    
+    volume = new Listing {
+        "/var/log/webapp:/var/log:Z"
+        "/etc/ssl/certs:/etc/ssl/certs:ro"
+    }
+    
+    label {
+        ["app"] = "webapp"
+        ["deployment"] = "kubernetes"
+        ["environment"] = "production"
+    }
+    
+    annotation {
+        ["deployment.kubernetes.io/revision"] = "1"
+        ["kubectl.kubernetes.io/last-applied-configuration"] = "webapp-config"
+    }
+    
+    logDriver = "journald"
+    downTimeout = 30
+}
+
+install = new {
+    wantedBy = "multi-user.target"
+}
