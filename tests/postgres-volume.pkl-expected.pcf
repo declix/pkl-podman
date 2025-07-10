@@ -1,0 +1,19 @@
+examples {
+  ["postgres volume quadlet"] {
+    """
+    [Unit]
+    After=local-fs.target
+    Description=PostgreSQL Data Volume
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Volume]
+    VolumeName=postgres-data
+    Driver=local
+    Label=app=postgres
+    Label=purpose=database-storage
+    
+    """
+  }
+}

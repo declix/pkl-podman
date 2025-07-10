@@ -1,0 +1,37 @@
+module declix.podman.Volume
+
+extends "@pkl-systemd/Unit.pkl"
+
+unit: UnitSection?
+install: InstallSection?
+volume: VolumeSection
+
+// https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html
+local class VolumeSection {
+    // Volume name
+    volumeName: String?
+    
+    // Volume driver
+    driver: String?
+    
+    // Device to mount for volume
+    device: String?
+    
+    // Image for volume (when using image driver)
+    image: String?
+    
+    // User ownership
+    user: String?
+    
+    // Group ownership
+    group: String?
+    
+    // Copy image content to volume
+    copy: Boolean?
+    
+    // Labels
+    label: Mapping<String, String>?
+    
+    // Driver options
+    option: (String|Listing<String>)?
+}

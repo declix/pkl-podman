@@ -1,0 +1,38 @@
+examples {
+  ["postgres container quadlet"] {
+    """
+    [Unit]
+    After=network-online.target
+    Description=PostgreSQL Database Container
+    Requires=network-online.target
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Container]
+    Image=docker.io/library/postgres:15
+    ContainerName=postgres
+    Environment=POSTGRES_DB=myapp
+    Environment=POSTGRES_USER=myuser
+    Environment=POSTGRES_PASSWORD=mypassword
+    Environment=PGDATA=/var/lib/postgresql/data/pgdata
+    PublishPort=5432:5432
+    Volume=postgres-data:/var/lib/postgresql/data
+    Volume=/etc/postgresql/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+    Pull=missing
+    Cpus=2.0
+    Memory=1G
+    HealthCmd=pg_isready -U myuser -d myapp
+    HealthInterval=10s
+    HealthTimeout=5s
+    HealthRetries=5
+    HealthStartPeriod=30s
+    
+    [Service]
+    Restart=on-failure
+    RestartSec=10
+    TimeoutStartSec=90
+    
+    """
+  }
+}

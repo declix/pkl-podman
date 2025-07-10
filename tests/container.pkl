@@ -163,6 +163,16 @@ local full = new Container {
     }
 }
 
+examples {
+    ["minimal container quadlet"] {
+        minimal.output.text
+    }
+    
+    ["full container quadlet"] {
+        full.output.text
+    }
+}
+
 facts {
     ["minimal container renders correctly"] {
         minimal.output.text.contains("[Unit]")

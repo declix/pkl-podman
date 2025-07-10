@@ -2,37 +2,8 @@ amends "pkl:test"
 
 import "../examples/postgres.pkl" as postgres
 
-facts {
-    ["renders database container configuration"] {
-        postgres.output.text.contains("Image=docker.io/library/postgres:15")
-        postgres.output.text.contains("ContainerName=postgres")
-        postgres.output.text.contains("PublishPort=5432:5432")
-    }
-    
-    ["renders volumes"] {
-        postgres.output.text.contains("Volume=postgres-data:/var/lib/postgresql/data")
-        postgres.output.text.contains("Volume=/etc/postgresql/postgresql.conf:/etc/postgresql/postgresql.conf:ro")
-    }
-    
-    ["renders environment"] {
-        postgres.output.text.contains("Environment=POSTGRES_DB=myapp")
-        postgres.output.text.contains("Environment=POSTGRES_USER=myuser")
-        postgres.output.text.contains("Environment=POSTGRES_PASSWORD=mypassword")
-        postgres.output.text.contains("Environment=PGDATA=/var/lib/postgresql/data/pgdata")
-    }
-    
-    ["renders resource limits"] {
-        postgres.output.text.contains("Memory=1G")
-        postgres.output.text.contains("Cpus=2")
-    }
-    
-    ["renders health check with start period"] {
-        postgres.output.text.contains("HealthCmd=pg_isready -U myuser -d myapp")
-        postgres.output.text.contains("HealthStartPeriod=30s")
-    }
-    
-    ["renders service configuration"] {
-        postgres.output.text.contains("Restart=on-failure")
-        postgres.output.text.contains("TimeoutStartSec=90")
+examples {
+    ["postgres container quadlet"] {
+        postgres.output.text
     }
 }

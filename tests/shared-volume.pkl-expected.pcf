@@ -1,0 +1,23 @@
+examples {
+  ["shared volume quadlet"] {
+    """
+    [Unit]
+    After=local-fs.target
+    Description=Shared Application Volume
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Volume]
+    VolumeName=app-shared
+    Driver=local
+    User=1000
+    Group=1000
+    Label=app=shared
+    Label=tier=storage
+    Option=type=tmpfs
+    Option=tmpfs-size=1G
+    
+    """
+  }
+}

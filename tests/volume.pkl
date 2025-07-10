@@ -1,0 +1,48 @@
+amends "pkl:test"
+
+import "../Volume.pkl"
+
+local postgresVolume = new Volume {
+    unit = new {
+        description = "Test Volume"
+        after = "local-fs.target"
+    }
+    
+    volume = new {
+        volumeName = "test-volume"
+        driver = "local"
+        user = "1000"
+        group = "1000"
+        copy = true
+        
+        label {
+            ["app"] = "test"
+            ["env"] = "development"
+        }
+        
+        option = new Listing {
+            "type=bind"
+            "bind-propagation=shared"
+        }
+    }
+    
+    install = new {
+        wantedBy = "multi-user.target"
+    }
+}
+
+local simpleVolume = new Volume {
+    volume = new {
+        volumeName = "simple-volume"
+    }
+}
+
+examples {
+    ["full volume quadlet"] {
+        postgresVolume.output.text
+    }
+    
+    ["simple volume quadlet"] {
+        simpleVolume.output.text
+    }
+}

@@ -1,0 +1,9 @@
+amends "pkl:test"
+
+import "../examples/postgres-volume.pkl" as postgresVolume
+
+examples {
+    ["postgres volume quadlet"] {
+        postgresVolume.output.text
+    }
+}

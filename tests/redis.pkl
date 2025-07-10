@@ -2,34 +2,8 @@ amends "pkl:test"
 
 import "../examples/redis.pkl" as redis
 
-facts {
-    ["renders redis container configuration"] {
-        redis.output.text.contains("Image=docker.io/library/redis:7-alpine")
-        redis.output.text.contains("ContainerName=redis")
-        redis.output.text.contains("PublishPort=6379:6379")
-    }
-    
-    ["renders custom exec command"] {
-        redis.output.text.contains("Exec=redis-server /usr/local/etc/redis/redis.conf")
-    }
-    
-    ["renders security settings"] {
-        redis.output.text.contains("User=999:999")
-        redis.output.text.contains("ReadOnly=yes")
-        redis.output.text.contains("NoNewPrivileges=yes")
-    }
-    
-    ["renders pull policy"] {
-        redis.output.text.contains("Pull=newer")
-    }
-    
-    ["renders resource limits"] {
-        redis.output.text.contains("Memory=512M")
-        redis.output.text.contains("Cpus=1")
-    }
-    
-    ["renders service restart policy"] {
-        redis.output.text.contains("Restart=on-failure")
-        redis.output.text.contains("RestartSec=5")
+examples {
+    ["redis container quadlet"] {
+        redis.output.text
     }
 }

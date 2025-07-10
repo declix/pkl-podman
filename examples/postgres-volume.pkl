@@ -1,0 +1,20 @@
+amends "../Volume.pkl"
+
+unit = new {
+    description = "PostgreSQL Data Volume"
+    after = "local-fs.target"
+}
+
+volume = new {
+    volumeName = "postgres-data"
+    driver = "local"
+    
+    label {
+        ["app"] = "postgres"
+        ["purpose"] = "database-storage"
+    }
+}
+
+install = new {
+    wantedBy = "multi-user.target"
+}

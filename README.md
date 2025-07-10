@@ -11,7 +11,7 @@ This project provides Pkl templates to generate Podman quadlet files, which are 
 Create a container definition file (e.g., `nginx.pkl`):
 
 ```pkl
-amends "package://pkl.declix.org/pkl-podman/Container.pkl"
+amends "package://pkl.declix.org/pkl-podman@1.0.0/Container.pkl"
 
 unit = new {
     description = "Nginx Web Server Container"
@@ -80,13 +80,53 @@ systemctl start nginx.service
 - **Logging**: Integration with journald
 - **Dependencies**: Proper ordering with other systemd units
 
+## Volumes
+
+Define Podman volumes using volume quadlet files:
+
+```pkl
+amends "package://pkl.declix.org/pkl-podman@1.0.0/Volume.pkl"
+
+unit = new {
+    description = "PostgreSQL Data Volume"
+    after = "local-fs.target"
+}
+
+volume = new {
+    volumeName = "postgres-data"
+    driver = "local"
+    
+    label {
+        ["app"] = "postgres"
+        ["purpose"] = "database-storage"
+    }
+}
+
+install = new {
+    wantedBy = "multi-user.target"
+}
+```
+
+Generate and use the volume:
+
+```bash
+pkl eval postgres-volume.pkl > ~/.config/containers/systemd/postgres-data.volume
+systemctl --user daemon-reload
+systemctl --user start postgres-data.service
+```
+
 ## Examples
 
-See the `examples/` directory for common container configurations:
+See the `examples/` directory for configurations:
 
+**Container quadlets:**
 - `nginx.pkl` - Web server with health checks
 - `postgres.pkl` - Database with persistent storage
 - `redis.pkl` - Cache with security hardening
+
+**Volume quadlets:**
+- `postgres-volume.pkl` - Database storage volume
+- `shared-volume.pkl` - Shared application volume with tmpfs
 
 ## Quadlet File Locations
 
@@ -105,9 +145,13 @@ Podman looks for quadlet files in these locations:
 This project depends on:
 - [pkl-systemd](https://github.com/declix/pkl-systemd) for base systemd unit definitions
 
-## Container vs Service Sections
+## Quadlet Types
 
-The generated quadlet files can contain multiple sections:
+This package supports two types of Podman quadlets:
+
+### Container Quadlets (.container)
+
+Generated quadlet files can contain multiple sections:
 
 - `[Unit]` - Standard systemd unit metadata
 - `[Container]` - Podman-specific container configuration
@@ -115,6 +159,16 @@ The generated quadlet files can contain multiple sections:
 - `[Install]` - Systemd installation directives
 
 The `[Container]` section is translated by Podman into appropriate `podman run` arguments when the service starts.
+
+### Volume Quadlets (.volume)
+
+Volume quadlet files define persistent storage:
+
+- `[Unit]` - Standard systemd unit metadata
+- `[Volume]` - Podman volume configuration
+- `[Install]` - Systemd installation directives
+
+Volume services ensure the volume exists before containers that depend on it start.
 
 ## Testing
 

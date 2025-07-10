@@ -1,0 +1,31 @@
+examples {
+  ["full volume quadlet"] {
+    """
+    [Unit]
+    After=local-fs.target
+    Description=Test Volume
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Volume]
+    VolumeName=test-volume
+    Driver=local
+    User=1000
+    Group=1000
+    Copy=yes
+    Label=app=test
+    Label=env=development
+    Option=type=bind
+    Option=bind-propagation=shared
+    
+    """
+  }
+  ["simple volume quadlet"] {
+    """
+    [Volume]
+    VolumeName=simple-volume
+    
+    """
+  }
+}

@@ -74,8 +74,8 @@ examples {
         pull = "missing"
         user = null
         workingDir = null
-        label {}
-        annotation {}
+        label = null
+        annotation = null
         exec = null
         entrypoint = null
         cpus = null
@@ -91,22 +91,22 @@ examples {
         healthStartPeriod = null
         logDriver = null
         timezone = null
-        secret {}
-        device {}
-        dns {}
-        dnsOption {}
-        dnsSearch {}
+        secret = null
+        device = null
+        dns = null
+        dnsOption = null
+        dnsSearch = null
         hostname = null
-        addHost {}
-        addCapability {}
-        dropCapability {}
-        ulimit {}
-        tmpfs {}
-        sysctl {}
-        groupAdd {}
+        addHost = null
+        addCapability = null
+        dropCapability = null
+        ulimit = null
+        tmpfs = null
+        sysctl = null
+        groupAdd = null
         userNS = null
         pidNS = null
-        networkAlias {}
+        networkAlias = null
       }
       service {
         type = null

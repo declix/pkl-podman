@@ -1,0 +1,95 @@
+examples {
+  ["minimal container quadlet"] {
+    """
+    [Unit]
+    Description=Test Container
+    
+    [Install]
+    WantedBy=default.target
+    
+    [Container]
+    Image=alpine:latest
+    
+    """
+  }
+  ["full container quadlet"] {
+    """
+    [Unit]
+    After=network-online.target
+    Description=Full Test Container
+    Wants=network-online.target
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Container]
+    Image=alpine:latest
+    ContainerName=test
+    Environment=FOO=bar
+    Environment=BAZ=qux
+    PublishPort=8080:80
+    PublishPort=8443:443
+    Volume=/host/path:/container/path
+    Volume=named-volume:/data
+    Network=bridge
+    Pull=always
+    User=1000:1000
+    WorkingDir=/app
+    Label=app=test
+    Label=version=1.0
+    Annotation=org.example.key=value
+    Exec=/bin/sh -c 'echo hello'
+    Entrypoint=/bin/sh
+    Cpus=1.5
+    Memory=256M
+    SecurityLabelDisable=yes
+    ReadOnly=yes
+    NoNewPrivileges=yes
+    PodmanArgs=--rm
+    HealthCmd=echo ok
+    HealthInterval=30s
+    HealthTimeout=3s
+    HealthRetries=3
+    HealthStartPeriod=10s
+    LogDriver=journald
+    Timezone=America/New_York
+    Secret=my-secret
+    Secret=other-secret,target=/run/secrets/custom
+    Device=/dev/fuse
+    Dns=8.8.8.8
+    Dns=8.8.4.4
+    DnsOption=ndots:2
+    DnsSearch=example.com
+    Hostname=test-host
+    AddHost=host1:192.168.1.1
+    AddHost=host2:192.168.1.2
+    AddCapability=NET_ADMIN
+    AddCapability=SYS_TIME
+    DropCapability=MKNOD
+    Ulimit=nofile=1024:2048
+    Tmpfs=/tmp:size=100M
+    Sysctl=net.ipv4.ip_forward=1
+    GroupAdd=audio
+    GroupAdd=video
+    UserNS=keep-id
+    PidNS=host
+    NetworkAlias=test-alias
+    NetworkAlias=another-alias
+    
+    [Service]
+    Type=notify
+    RemainAfterExit=yes
+    Restart=on-failure
+    RestartSec=10
+    TimeoutStartSec=300
+    TimeoutStopSec=90
+    CpuWeight=200
+    CpuQuota=50%
+    MemoryMax=512M
+    MemoryHigh=256M
+    Requires=network.target
+    Wants=time-sync.target
+    
+    """
+  }
+}

@@ -1,0 +1,27 @@
+amends "../Volume.pkl"
+
+unit = new {
+    description = "Shared Application Volume"
+    after = "local-fs.target"
+}
+
+volume = new {
+    volumeName = "app-shared"
+    driver = "local"
+    user = "1000"
+    group = "1000"
+    
+    option = new Listing {
+        "type=tmpfs"
+        "tmpfs-size=1G"
+    }
+    
+    label {
+        ["app"] = "shared"
+        ["tier"] = "storage"
+    }
+}
+
+install = new {
+    wantedBy = "multi-user.target"
+}

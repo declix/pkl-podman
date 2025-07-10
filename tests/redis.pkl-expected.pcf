@@ -1,0 +1,35 @@
+examples {
+  ["redis container quadlet"] {
+    """
+    [Unit]
+    After=network.target
+    Description=Redis In-Memory Data Store
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Container]
+    Image=docker.io/library/redis:7-alpine
+    ContainerName=redis
+    PublishPort=6379:6379
+    Volume=redis-data:/data
+    Volume=/etc/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    Pull=newer
+    User=999:999
+    Exec=redis-server /usr/local/etc/redis/redis.conf
+    Cpus=1.0
+    Memory=512M
+    ReadOnly=yes
+    NoNewPrivileges=yes
+    HealthCmd=redis-cli ping
+    HealthInterval=10s
+    HealthTimeout=3s
+    HealthRetries=3
+    
+    [Service]
+    Restart=on-failure
+    RestartSec=5
+    
+    """
+  }
+}
