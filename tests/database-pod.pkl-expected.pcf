@@ -2,9 +2,9 @@ examples {
   ["database pod quadlet"] {
     """
     [Unit]
-    After=network.target
     Description=Database Pod with Security
     Requires=network.target
+    After=network.target
     
     [Install]
     WantedBy=multi-user.target

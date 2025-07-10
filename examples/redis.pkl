@@ -23,8 +23,8 @@ container = new {
     pull = "newer"
     
     healthCmd = "redis-cli ping"
-    healthInterval = "10s"
-    healthTimeout = "3s"
+    healthInterval = 10.s
+    healthTimeout = 3.s
     healthRetries = 3
     
     memory = "512M"
@@ -37,7 +37,7 @@ container = new {
 
 service = new {
     restart = "on-failure"
-    restartSec = 5
+    restartSec = 5.s
 }
 
 install = new {

@@ -2,8 +2,8 @@ examples {
   ["multistage build quadlet"] {
     """
     [Unit]
-    After=network.target
     Description=Multi-stage Application Build
+    After=network.target
     
     [Install]
     WantedBy=multi-user.target

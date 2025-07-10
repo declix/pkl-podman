@@ -27,14 +27,14 @@ container = new {
     pull = "missing"
     
     healthCmd = "curl -f http://localhost/ || exit 1"
-    healthInterval = "30s"
-    healthTimeout = "3s"
+    healthInterval = 30.s
+    healthTimeout = 3.s
     healthRetries = 3
 }
 
 service = new {
     restart = "always"
-    restartSec = 5
+    restartSec = 5.s
 }
 
 install = new {

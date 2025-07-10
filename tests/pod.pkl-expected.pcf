@@ -2,8 +2,8 @@ examples {
   ["full pod quadlet"] {
     """
     [Unit]
-    After=network.target
     Description=Test Pod
+    After=network.target
     
     [Install]
     WantedBy=multi-user.target

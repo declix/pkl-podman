@@ -2,8 +2,8 @@ examples {
   ["web pod quadlet"] {
     """
     [Unit]
-    After=network.target
     Description=Web Application Pod
+    After=network.target
     
     [Install]
     WantedBy=multi-user.target

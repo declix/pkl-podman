@@ -2,8 +2,8 @@ examples {
   ["full volume quadlet"] {
     """
     [Unit]
-    After=local-fs.target
     Description=Test Volume
+    After=local-fs.target
     
     [Install]
     WantedBy=multi-user.target

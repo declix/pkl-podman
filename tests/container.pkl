@@ -69,10 +69,10 @@ local full = new Container {
         podmanArgs = "--rm"
         
         healthCmd = "echo ok"
-        healthInterval = "30s"
-        healthTimeout = "3s"
+        healthInterval = 30.s
+        healthTimeout = 3.s
         healthRetries = 3
-        healthStartPeriod = "10s"
+        healthStartPeriod = 10.s
         
         logDriver = "journald"
         timezone = "America/New_York"
@@ -145,9 +145,9 @@ local full = new Container {
         type = "notify"
         remainAfterExit = true
         restart = "on-failure"
-        restartSec = 10
-        timeoutStartSec = 300
-        timeoutStopSec = 90
+        restartSec = 10.s
+        timeoutStartSec = 300.s
+        timeoutStopSec = 90.s
         
         cpuWeight = 200
         cpuQuota = "50%"

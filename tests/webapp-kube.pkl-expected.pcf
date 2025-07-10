@@ -2,8 +2,8 @@ examples {
   ["webapp kube quadlet"] {
     """
     [Unit]
-    After=network.target
     Description=Web Application Kubernetes Deployment
+    After=network.target
     
     [Install]
     WantedBy=multi-user.target

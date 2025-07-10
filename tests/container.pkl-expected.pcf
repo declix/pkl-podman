@@ -15,9 +15,9 @@ examples {
   ["full container quadlet"] {
     """
     [Unit]
-    After=network-online.target
     Description=Full Test Container
     Wants=network-online.target
+    After=network-online.target
     
     [Install]
     WantedBy=multi-user.target
@@ -47,10 +47,10 @@ examples {
     NoNewPrivileges=yes
     PodmanArgs=--rm
     HealthCmd=echo ok
-    HealthInterval=30s
-    HealthTimeout=3s
+    HealthInterval=30
+    HealthTimeout=3
     HealthRetries=3
-    HealthStartPeriod=10s
+    HealthStartPeriod=10
     LogDriver=journald
     Timezone=America/New_York
     Secret=my-secret

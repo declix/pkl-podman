@@ -65,10 +65,10 @@ local class ContainerSection {
     
     // Health check
     healthCmd: String?
-    healthInterval: String?
-    healthTimeout: String?
+    healthInterval: Duration?
+    healthTimeout: Duration?
     healthRetries: UInt?
-    healthStartPeriod: String?
+    healthStartPeriod: Duration?
     
     // Logging
     logDriver: String?
@@ -125,9 +125,9 @@ local class ServiceSection {
     type: ServiceType?
     remainAfterExit: Boolean?
     restart: RestartPolicy?
-    restartSec: UInt?
-    timeoutStartSec: UInt?
-    timeoutStopSec: UInt?
+    restartSec: Duration?
+    timeoutStartSec: Duration?
+    timeoutStopSec: Duration?
     
     // Resource control
     cpuWeight: UInt?

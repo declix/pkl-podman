@@ -3,9 +3,9 @@
   "resolvedDependencies": {
     "package://pkl.declix.org/pkl-systemd@1": {
       "type": "remote",
-      "uri": "projectpackage://pkl.declix.org/pkl-systemd@1.0.0",
+      "uri": "projectpackage://pkl.declix.org/pkl-systemd@1.2.0",
       "checksums": {
-        "sha256": "dc3585625c813b1fda27bb3ca13f756f671cbb9715d0c20b160a15f814598c69"
+        "sha256": "1b23449f0d7af801af910912c1d9c77ac513174c5021280b90f9e387ae9a2c38"
       }
     }
   }

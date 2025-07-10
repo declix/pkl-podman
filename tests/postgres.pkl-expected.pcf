@@ -2,9 +2,9 @@ examples {
   ["postgres container quadlet"] {
     """
     [Unit]
-    After=network-online.target
     Description=PostgreSQL Database Container
     Requires=network-online.target
+    After=network-online.target
     
     [Install]
     WantedBy=multi-user.target
@@ -23,10 +23,10 @@ examples {
     Cpus=2.0
     Memory=1G
     HealthCmd=pg_isready -U myuser -d myapp
-    HealthInterval=10s
-    HealthTimeout=5s
+    HealthInterval=10
+    HealthTimeout=5
     HealthRetries=5
-    HealthStartPeriod=30s
+    HealthStartPeriod=30
     
     [Service]
     Restart=on-failure

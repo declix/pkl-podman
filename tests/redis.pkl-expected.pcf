@@ -2,8 +2,8 @@ examples {
   ["redis container quadlet"] {
     """
     [Unit]
-    After=network.target
     Description=Redis In-Memory Data Store
+    After=network.target
     
     [Install]
     WantedBy=multi-user.target
@@ -22,8 +22,8 @@ examples {
     ReadOnly=yes
     NoNewPrivileges=yes
     HealthCmd=redis-cli ping
-    HealthInterval=10s
-    HealthTimeout=3s
+    HealthInterval=10
+    HealthTimeout=3
     HealthRetries=3
     
     [Service]

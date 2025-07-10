@@ -29,10 +29,10 @@ container = new {
     pull = "missing"
     
     healthCmd = "pg_isready -U myuser -d myapp"
-    healthInterval = "10s"
-    healthTimeout = "5s"
+    healthInterval = 10.s
+    healthTimeout = 5.s
     healthRetries = 5
-    healthStartPeriod = "30s"
+    healthStartPeriod = 30.s
     
     memory = "1G"
     cpus = 2.0
@@ -40,8 +40,8 @@ container = new {
 
 service = new {
     restart = "on-failure" 
-    restartSec = 10
-    timeoutStartSec = 90
+    restartSec = 10.s
+    timeoutStartSec = 90.s
 }
 
 install = new {

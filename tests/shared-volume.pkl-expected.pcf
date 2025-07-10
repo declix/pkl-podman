@@ -2,8 +2,8 @@ examples {
   ["shared volume quadlet"] {
     """
     [Unit]
-    After=local-fs.target
     Description=Shared Application Volume
+    After=local-fs.target
     
     [Install]
     WantedBy=multi-user.target

@@ -2,8 +2,8 @@ examples {
   ["full network quadlet"] {
     """
     [Unit]
-    After=network.target
     Description=Test Network
+    After=network.target
     
     [Install]
     WantedBy=multi-user.target

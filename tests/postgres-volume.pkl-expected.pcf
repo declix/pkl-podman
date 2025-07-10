@@ -2,8 +2,8 @@ examples {
   ["postgres volume quadlet"] {
     """
     [Unit]
-    After=local-fs.target
     Description=PostgreSQL Data Volume
+    After=local-fs.target
     
     [Install]
     WantedBy=multi-user.target

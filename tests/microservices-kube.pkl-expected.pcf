@@ -2,10 +2,10 @@ examples {
   ["microservices kube quadlet"] {
     """
     [Unit]
-    After=network.target
-    After=webapp-network.service
     Description=Microservices Stack
     Requires=webapp-network.service
+    After=network.target
+    After=webapp-network.service
     
     [Install]
     WantedBy=multi-user.target
