@@ -1,7 +1,15 @@
 {
     "plugins": [
         "@semantic-release/commit-analyzer",
-        "@semantic-release/release-notes-generator",
+        [
+            "@semantic-release/release-notes-generator",
+            {
+                "preset": "conventionalcommits",
+                "writerOpts": {
+                    "headerPartial": "## pkl-podman {{#if isPatch~}} <small>\n  {{~/if~}} {{version}}\n  {{~#if title}} \"{{title}}\"\n  {{~/if~}}\n  {{~#if date}} ({{date}})\n  {{~/if~}}\n  {{~#if isPatch~}} </small>\n  {{~/if}}\n\nThis is the {{version}} release of pkl-podman - declarative Podman configuration using Pkl.\n\n## Installation\n\n### Option 1: PklProject Dependencies (Recommended)\n\nAdd to your `PklProject` dependencies:\n\n```\ndependencies {\n    [\"podman\"] = \"package://pkl.declix.org/pkl-podman@{{version}}\"\n}\n```\n\nThen import with short syntax:\n\n```pkl\nimport \"@podman/Container.pkl\"\nimport \"@podman/Pod.pkl\"\nimport \"@podman/Build.pkl\"\nimport \"@podman/Volume.pkl\"\nimport \"@podman/Network.pkl\"\nimport \"@podman/Kube.pkl\"\n```\n\n### Option 2: Direct Import\n\n```pkl\n// Container configuration\namends \"package://pkl.declix.org/pkl-podman@{{version}}#/Container.pkl\"\n\n// Pod configuration\namends \"package://pkl.declix.org/pkl-podman@{{version}}#/Pod.pkl\"\n\n// Build configuration\namends \"package://pkl.declix.org/pkl-podman@{{version}}#/Build.pkl\"\n\n// Volume configuration\namends \"package://pkl.declix.org/pkl-podman@{{version}}#/Volume.pkl\"\n\n// Network configuration\namends \"package://pkl.declix.org/pkl-podman@{{version}}#/Network.pkl\"\n\n// Kubernetes YAML\namends \"package://pkl.declix.org/pkl-podman@{{version}}#/Kube.pkl\"\n```\n\n"
+                }
+            }
+        ],
         [
             "@semantic-release/exec",
             {
