@@ -6,6 +6,10 @@ Pkl templates for configuring [Podman](https://podman.io/) containers using [sys
 
 This project provides Pkl templates to generate Podman quadlet files, which are systemd unit files that describe how to run containers. Quadlets provide a declarative way to manage containers with systemd, offering better integration with the system's service manager.
 
+## Installation
+
+For installation instructions and usage examples, see the **[latest release notes](https://github.com/declix/pkl-podman/releases/latest)**.
+
 ## Usage
 
 Create a container definition file (e.g., `nginx.pkl`):
