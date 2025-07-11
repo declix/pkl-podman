@@ -12,10 +12,14 @@ For installation instructions and usage examples, see the **[latest release note
 
 ## Usage
 
-Create a container definition file (e.g., `nginx.pkl`):
+There are two ways to use pkl-podman:
+
+### Option 1: Direct Amends (Simple)
+
+Directly amend specific unit types. Create a container definition file (e.g., `nginx.pkl`):
 
 ```pkl
-amends "package://pkl.declix.org/pkl-podman@1.0.0/Container.pkl"
+amends "package://pkl.declix.org/pkl-podman@1.4.1#/Container.pkl"
 
 unit = new {
     description = "Nginx Web Server Container"
@@ -64,6 +68,41 @@ pkl eval nginx.pkl > /etc/containers/systemd/nginx.container
 systemctl daemon-reload
 systemctl start nginx.service
 ```
+
+### Option 2: Import and Instantiate (Flexible)
+
+Import the podman module and create unit instances:
+
+```pkl
+import "package://pkl.declix.org/pkl-podman@1.4.1#/podman.pkl" as podman
+
+output {
+    text = (new podman.Container {
+        unit = new {
+            description = "Nginx Web Server Container"
+            after = "network-online.target"
+        }
+        container = new {
+            image = "docker.io/library/nginx:latest"
+            containerName = "nginx"
+            publishPort {
+                "80:80"
+                "443:443"
+            }
+            pull = "missing"
+        }
+        service = new {
+            restart = "always"
+            restartSec = 5
+        }
+        install = new {
+            wantedBy = "multi-user.target"
+        }
+    }).output.text
+}
+```
+
+The import approach is useful when you need to generate multiple containers or combine with other Pkl logic.
 
 ## Features
 
