@@ -1,0 +1,10 @@
+/// Tests that import and render all examples using glob
+amends "pkl:test"
+
+examples {
+    for (path, `module` in import*("../examples/*.pkl")) {
+        [path] {
+            `module`.output.text
+        }
+    }
+}

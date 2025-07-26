@@ -1,0 +1,395 @@
+examples {
+  ["../examples/app-network.pkl"] {
+    """
+    [Unit]
+    Description=Application Network
+    After=network.target
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Network]
+    NetworkName=app-net
+    Driver=bridge
+    Subnet=10.88.0.0/16
+    Gateway=10.88.0.1
+    Label=app=myapp
+    Label=environment=production
+    
+    """
+  }
+  ["../examples/database-pod.pkl"] {
+    """
+    [Unit]
+    Description=Database Pod with Security
+    Requires=network.target
+    After=network.target
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Pod]
+    PodName=database-cluster
+    Network=db-network
+    PublishPort=5432:5432
+    PublishPort=6379:6379
+    Dns=10.0.0.1
+    DnsSearch=internal.example.com
+    DnsSearch=db.example.com
+    Hostname=db-cluster.internal
+    ExitPolicy=continue
+    Volume=postgres-data:/var/lib/postgresql/data:Z
+    Volume=redis-data:/data:Z
+    Volume=/etc/database/config:/etc/config:ro
+    UserNS=keep-id
+    GidMap=0:100000:65536
+    UidMap=0:100000:65536
+    NetworkAlias=postgres.db
+    NetworkAlias=redis.db
+    NetworkAlias=primary.db
+    SecurityLabelType=container_t
+    SecurityLabelDisable=no
+    Label=app=database
+    Label=tier=data
+    Label=security=high
+    Label=backup=enabled
+    Annotation=backup.schedule=0 2 * * *
+    Annotation=monitoring.enabled=true
+    ShareNet=yes
+    ShareIPC=no
+    ShareUTS=yes
+    SharePID=no
+    InfraImage=registry.redhat.io/ubi8/pause:latest
+    
+    """
+  }
+  ["../examples/isolated-network.pkl"] {
+    """
+    [Unit]
+    Description=Isolated Internal Network
+    After=network.target
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Network]
+    NetworkName=isolated-net
+    Driver=bridge
+    Subnet=172.20.0.0/24
+    Dns=172.20.0.1
+    Dns=8.8.8.8
+    Internal=yes
+    Ipv6=yes
+    Gateway=172.20.0.1
+    Label=tier=isolated
+    Label=security=high
+    Option=com.docker.network.bridge.name=isolated0
+    Option=com.docker.network.driver.mtu=1450
+    
+    """
+  }
+  ["../examples/microservices-kube.pkl"] {
+    """
+    [Unit]
+    Description=Microservices Stack
+    Requires=webapp-network.service
+    After=network.target
+    After=webapp-network.service
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Kube]
+    Yaml=/app/k8s/microservices.yaml
+    AutoUpdate=local
+    ConfigMap=/app/k8s/config/app-config.yaml
+    ConfigMap=/app/k8s/config/database-config.yaml
+    ConfigMap=/app/k8s/secrets/api-keys.yaml
+    Network=microservices
+    PublishPort=3000:3000
+    PublishPort=3001:3001
+    PublishPort=3002:3002
+    PublishPort=9090:9090
+    ExitCodePropagation=all
+    UserNS=auto
+    GidMap=0:100000:65536
+    UidMap=0:100000:65536
+    SecurityLabelType=container_t
+    SecurityLabelDisable=no
+    Label=app=microservices
+    Label=stack=full
+    Label=tier=production
+    Label=monitoring=enabled
+    Annotation=app.kubernetes.io/name=microservices-stack
+    Annotation=app.kubernetes.io/version=2.1.0
+    Annotation=app.kubernetes.io/component=backend
+    Annotation=monitoring.coreos.com/scrape=true
+    Volume=postgres-data:/var/lib/postgresql/data:Z
+    Volume=redis-data:/data:Z
+    Volume=/app/logs:/var/log/app:Z
+    Volume=/app/uploads:/uploads:Z
+    LogDriver=k8s-file
+    LogOpt=path=/var/log/pods
+    LogOpt=max-size=100m
+    DownTimeout=60
+    SetWorkingDirectory=/app/k8s
+    
+    """
+  }
+  ["../examples/multistage-build.pkl"] {
+    """
+    [Unit]
+    Description=Multi-stage Application Build
+    After=network.target
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Build]
+    ImageTag=localhost/myapp:production
+    File=./docker/Containerfile.prod
+    SetWorkingDirectory=/workspace
+    Pull=always
+    BuildArg=GO_VERSION=1.21
+    BuildArg=CGO_ENABLED=0
+    BuildArg=GOOS=linux
+    Label=app=myapp
+    Label=tier=backend
+    Label=build-type=production
+    Annotation=org.opencontainers.image.source=https://github.com/example/myapp
+    Annotation=org.opencontainers.image.documentation=https://docs.example.com/myapp
+    Platform=linux/amd64
+    Secret=id=github_token,src=/run/secrets/github_token
+    Secret=id=registry_auth,src=/run/secrets/registry_auth
+    TlsVerify=yes
+    Rm=yes
+    Squash=yes
+    Volume=/var/cache/go:/go/pkg/mod:Z
+    Volume=/var/cache/build:/root/.cache:Z
+    Target=production
+    
+    """
+  }
+  ["../examples/nginx.pkl"] {
+    """
+    [Unit]
+    Description=Nginx Web Server Container
+    After=network-online.target
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Container]
+    Image=docker.io/library/nginx:latest
+    ContainerName=nginx
+    Environment=NGINX_HOST=example.com
+    Environment=NGINX_PORT=80
+    PublishPort=80:80
+    PublishPort=443:443
+    Volume=/etc/nginx/conf.d:/etc/nginx/conf.d:ro
+    Volume=/var/www/html:/usr/share/nginx/html:ro
+    Pull=missing
+    HealthCmd=curl -f http://localhost/ || exit 1
+    HealthInterval=30s
+    HealthTimeout=3s
+    HealthRetries=3
+    
+    [Service]
+    Restart=always
+    RestartSec=5s
+    
+    """
+  }
+  ["../examples/postgres-volume.pkl"] {
+    """
+    [Unit]
+    Description=PostgreSQL Data Volume
+    After=local-fs.target
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Volume]
+    VolumeName=postgres-data
+    Driver=local
+    Label=app=postgres
+    Label=purpose=database-storage
+    
+    """
+  }
+  ["../examples/postgres.pkl"] {
+    """
+    [Unit]
+    Description=PostgreSQL Database Container
+    Requires=network-online.target
+    After=network-online.target
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Container]
+    Image=docker.io/library/postgres:15
+    ContainerName=postgres
+    Environment=POSTGRES_DB=myapp
+    Environment=POSTGRES_USER=myuser
+    Environment=POSTGRES_PASSWORD=mypassword
+    Environment=PGDATA=/var/lib/postgresql/data/pgdata
+    PublishPort=5432:5432
+    Volume=postgres-data:/var/lib/postgresql/data
+    Volume=/etc/postgresql/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+    Pull=missing
+    Cpus=2.0
+    Memory=1G
+    HealthCmd=pg_isready -U myuser -d myapp
+    HealthInterval=10s
+    HealthTimeout=5s
+    HealthRetries=5
+    HealthStartPeriod=30s
+    
+    [Service]
+    Restart=on-failure
+    RestartSec=10s
+    TimeoutStartSec=90s
+    
+    """
+  }
+  ["../examples/redis.pkl"] {
+    """
+    [Unit]
+    Description=Redis In-Memory Data Store
+    After=network.target
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Container]
+    Image=docker.io/library/redis:7-alpine
+    ContainerName=redis
+    PublishPort=6379:6379
+    Volume=redis-data:/data
+    Volume=/etc/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    Pull=newer
+    User=999:999
+    Exec=redis-server /usr/local/etc/redis/redis.conf
+    Cpus=1.0
+    Memory=512M
+    ReadOnly=yes
+    NoNewPrivileges=yes
+    HealthCmd=redis-cli ping
+    HealthInterval=10s
+    HealthTimeout=3s
+    HealthRetries=3
+    
+    [Service]
+    Restart=on-failure
+    RestartSec=5s
+    
+    """
+  }
+  ["../examples/shared-volume.pkl"] {
+    """
+    [Unit]
+    Description=Shared Application Volume
+    After=local-fs.target
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Volume]
+    VolumeName=app-shared
+    Driver=local
+    User=1000
+    Group=1000
+    Label=app=shared
+    Label=tier=storage
+    Option=type=tmpfs
+    Option=tmpfs-size=1G
+    
+    """
+  }
+  ["../examples/web-pod.pkl"] {
+    """
+    [Unit]
+    Description=Web Application Pod
+    After=network.target
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Pod]
+    PodName=webapp
+    Network=bridge
+    PublishPort=8080:80
+    PublishPort=8443:443
+    Dns=8.8.8.8
+    Dns=8.8.4.4
+    Hostname=webapp.local
+    ExitPolicy=stop
+    Volume=/var/log/webapp:/var/log:Z
+    Volume=/etc/ssl/certs:/etc/ssl/certs:ro
+    Label=app=webapp
+    Label=tier=web
+    Label=environment=production
+    ShareNet=yes
+    ShareIPC=yes
+    
+    """
+  }
+  ["../examples/webapp-build.pkl"] {
+    """
+    [Unit]
+    Description=Web Application Build
+    After=network.target
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Build]
+    ImageTag=localhost/webapp:latest
+    File=/app/Containerfile
+    SetWorkingDirectory=/app
+    Environment=BUILDKIT_PROGRESS=plain
+    Network=host
+    Pull=missing
+    BuildArg=NODE_VERSION=18
+    BuildArg=BUILD_ENV=production
+    Label=app=webapp
+    Label=version=1.0.0
+    Label=maintainer=devops@example.com
+    ForceRm=yes
+    Rm=yes
+    
+    """
+  }
+  ["../examples/webapp-kube.pkl"] {
+    """
+    [Unit]
+    Description=Web Application Kubernetes Deployment
+    After=network.target
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Kube]
+    Yaml=/etc/kubernetes/webapp/deployment.yaml
+    AutoUpdate=registry
+    ConfigMap=/etc/kubernetes/webapp/configmap.yaml
+    ConfigMap=/etc/kubernetes/webapp/secrets.yaml
+    Network=webapp-net
+    PublishPort=8080:80
+    PublishPort=8443:443
+    ExitCodePropagation=any
+    WorkingDirectory=/etc/kubernetes/webapp
+    Label=app=webapp
+    Label=deployment=kubernetes
+    Label=environment=production
+    Annotation=deployment.kubernetes.io/revision=1
+    Annotation=kubectl.kubernetes.io/last-applied-configuration=webapp-config
+    Volume=/var/log/webapp:/var/log:Z
+    Volume=/etc/ssl/certs:/etc/ssl/certs:ro
+    LogDriver=journald
+    DownTimeout=30
+    
+    """
+  }
+}
