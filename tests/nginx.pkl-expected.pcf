@@ -19,13 +19,13 @@ examples {
     Volume=/var/www/html:/usr/share/nginx/html:ro
     Pull=missing
     HealthCmd=curl -f http://localhost/ || exit 1
-    HealthInterval=30
-    HealthTimeout=3
+    HealthInterval=30s
+    HealthTimeout=3s
     HealthRetries=3
     
     [Service]
     Restart=always
-    RestartSec=5
+    RestartSec=5s
     
     """
   }

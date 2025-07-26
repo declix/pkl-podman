@@ -23,15 +23,15 @@ examples {
     Cpus=2.0
     Memory=1G
     HealthCmd=pg_isready -U myuser -d myapp
-    HealthInterval=10
-    HealthTimeout=5
+    HealthInterval=10s
+    HealthTimeout=5s
     HealthRetries=5
-    HealthStartPeriod=30
+    HealthStartPeriod=30s
     
     [Service]
     Restart=on-failure
-    RestartSec=10
-    TimeoutStartSec=90
+    RestartSec=10s
+    TimeoutStartSec=90s
     
     """
   }

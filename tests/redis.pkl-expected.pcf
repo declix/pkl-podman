@@ -22,13 +22,13 @@ examples {
     ReadOnly=yes
     NoNewPrivileges=yes
     HealthCmd=redis-cli ping
-    HealthInterval=10
-    HealthTimeout=3
+    HealthInterval=10s
+    HealthTimeout=3s
     HealthRetries=3
     
     [Service]
     Restart=on-failure
-    RestartSec=5
+    RestartSec=5s
     
     """
   }
