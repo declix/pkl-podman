@@ -19,7 +19,7 @@ There are two ways to use pkl-podman:
 Directly amend specific unit types. Create a container definition file (e.g., `nginx.pkl`):
 
 ```pkl
-amends "package://pkl.declix.org/pkl-podman@1.4.1#/Container.pkl"
+amends "package://pkl.declix.org/pkl-podman@X.Y.Z#/Container.pkl"
 
 unit = new {
     description = "Nginx Web Server Container"
@@ -74,7 +74,7 @@ systemctl start nginx.service
 Import the podman module and create unit instances:
 
 ```pkl
-import "package://pkl.declix.org/pkl-podman@1.4.1#/podman.pkl" as podman
+import "package://pkl.declix.org/pkl-podman@X.Y.Z#/podman.pkl" as podman
 
 output {
     text = (new podman.Container {
@@ -128,7 +128,7 @@ The import approach is useful when you need to generate multiple containers or c
 Define Podman volumes using volume quadlet files:
 
 ```pkl
-amends "package://pkl.declix.org/pkl-podman@1.0.0/Volume.pkl"
+amends "package://pkl.declix.org/pkl-podman@X.Y.Z#/Volume.pkl"
 
 unit = new {
     description = "PostgreSQL Data Volume"
@@ -163,7 +163,7 @@ systemctl --user start postgres-data.service
 Define Podman networks using network quadlet files:
 
 ```pkl
-amends "package://pkl.declix.org/pkl-podman@1.0.0/Network.pkl"
+amends "package://pkl.declix.org/pkl-podman@X.Y.Z#/Network.pkl"
 
 unit = new {
     description = "Application Network"
@@ -200,7 +200,7 @@ systemctl --user start app-net.service
 Define Podman image builds using build quadlet files:
 
 ```pkl
-amends "package://pkl.declix.org/pkl-podman@1.0.0/Build.pkl"
+amends "package://pkl.declix.org/pkl-podman@X.Y.Z#/Build.pkl"
 
 unit = new {
     description = "Web Application Build"
@@ -244,7 +244,7 @@ systemctl --user start webapp-build.service
 Define Podman pods using pod quadlet files:
 
 ```pkl
-amends "package://pkl.declix.org/pkl-podman@1.0.0/Pod.pkl"
+amends "package://pkl.declix.org/pkl-podman@X.Y.Z#/Pod.pkl"
 
 unit = new {
     description = "Web Application Pod"
@@ -290,7 +290,7 @@ systemctl --user start webapp-pod.service
 Deploy Kubernetes YAML files using Kubernetes quadlet files:
 
 ```pkl
-amends "package://pkl.declix.org/pkl-podman@1.0.0/Kube.pkl"
+amends "package://pkl.declix.org/pkl-podman@X.Y.Z#/Kube.pkl"
 
 unit = new {
     description = "Web Application Kubernetes Deployment"
