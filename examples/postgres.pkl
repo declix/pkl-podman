@@ -34,8 +34,10 @@ container = new {
     healthRetries = 5
     healthStartPeriod = 30.s
     
-    memory = "1G"
-    cpus = 2.0
+    podmanArgs {
+        "--memory=1G"
+        "--cpus=2.0"
+    }
 }
 
 service = new {

@@ -81,17 +81,6 @@ local class BuildSection {
     // Additional podman build flags
     podmanArgs: Listing<String>?
     
-    // Pull retry (not in official quadlet spec, for compatibility)
-    retry: UInt?
-    
-    // Pull retry delay (not in official quadlet spec, for compatibility)
-    retryDelay: String?
-    
-    // Remove intermediate containers (--rm)
-    rm: Boolean?
-    
-    // Squash layers (--squash)
-    squash: Boolean?
 }
 
 local typealias PullPolicy = "always" | "missing" | "never" | "newer"

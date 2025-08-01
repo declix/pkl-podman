@@ -59,14 +59,11 @@ local full = new Container {
         exec = "/bin/sh -c 'echo hello'"
         entrypoint = "/bin/sh"
         
-        cpus = 1.5
-        memory = "256M"
-        
         securityLabelDisable = true
         readOnly = true
         noNewPrivileges = true
         
-        podmanArgs { "--rm"; "--privileged"; "--cap-add=SYS_ADMIN" }
+        podmanArgs { "--rm"; "--privileged"; "--cap-add=SYS_ADMIN"; "--cpus=1.5"; "--memory=256M"; "--pid=host" }
         
         healthCmd = "echo ok"
         healthInterval = 30.s
@@ -143,7 +140,6 @@ local full = new Container {
         }
         
         userNS = "keep-id"
-        pidNS = "host"
         
         networkAlias = new Listing {
             "test-alias"
@@ -208,8 +204,8 @@ facts {
         full.output.text.contains("WorkingDir=/app")
         full.output.text.contains("Exec=/bin/sh -c 'echo hello'")
         full.output.text.contains("Entrypoint=/bin/sh")
-        full.output.text.contains("Cpus=1.5")
-        full.output.text.contains("Memory=256M")
+        full.output.text.contains("PodmanArgs=--cpus=1.5")
+        full.output.text.contains("PodmanArgs=--memory=256M")
         full.output.text.contains("SecurityLabelDisable=yes")
         full.output.text.contains("ReadOnly=yes")
         full.output.text.contains("NoNewPrivileges=yes")
@@ -218,7 +214,7 @@ facts {
         full.output.text.contains("Timezone=America/New_York")
         full.output.text.contains("Hostname=test-host")
         full.output.text.contains("UserNS=keep-id")
-        full.output.text.contains("PidNS=host")
+        full.output.text.contains("PodmanArgs=--pid=host")
     }
     
     ["renders service options"] {

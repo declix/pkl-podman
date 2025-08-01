@@ -27,8 +27,10 @@ container = new {
     healthTimeout = 3.s
     healthRetries = 3
     
-    memory = "512M"
-    cpus = 1.0
+    podmanArgs {
+        "--memory=512M"
+        "--cpus=1.0"
+    }
     
     user = "999:999"
     readOnly = true

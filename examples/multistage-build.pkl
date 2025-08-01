@@ -41,9 +41,12 @@ build = new {
     }
     
     pull = "always"
-    squash = true
-    rm = true
     tlsVerify = true
+    
+    podmanArgs {
+        "--squash"
+        "--rm"
+    }
 }
 
 install = new {

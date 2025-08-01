@@ -21,7 +21,7 @@ examples {
     BuildArg=NODE_VERSION=18
     BuildArg=BUILD_ENV=production
     ForceRm=yes
-    Rm=yes
+    PodmanArgs=--rm
     
     """
   }

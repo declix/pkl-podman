@@ -41,14 +41,15 @@ examples {
     Annotation=org.example.key=value
     Exec=/bin/sh -c 'echo hello'
     Entrypoint=/bin/sh
-    Cpus=1.5
-    Memory=256M
     SecurityLabelDisable=yes
     ReadOnly=yes
     NoNewPrivileges=yes
     PodmanArgs=--rm
     PodmanArgs=--privileged
     PodmanArgs=--cap-add=SYS_ADMIN
+    PodmanArgs=--cpus=1.5
+    PodmanArgs=--memory=256M
+    PodmanArgs=--pid=host
     HealthCmd=echo ok
     HealthInterval=30s
     HealthTimeout=3s
@@ -77,7 +78,6 @@ examples {
     GroupAdd=audio
     GroupAdd=video
     UserNS=keep-id
-    PidNS=host
     NetworkAlias=test-alias
     NetworkAlias=another-alias
     AutoUpdate=registry

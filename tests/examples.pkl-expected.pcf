@@ -152,8 +152,8 @@ examples {
     Volume=/var/cache/go:/go/pkg/mod:Z
     Volume=/var/cache/build:/root/.cache:Z
     Target=production
-    Rm=yes
-    Squash=yes
+    PodmanArgs=--squash
+    PodmanArgs=--rm
     
     """
   }
@@ -225,8 +225,8 @@ examples {
     Volume=postgres-data:/var/lib/postgresql/data
     Volume=/etc/postgresql/postgresql.conf:/etc/postgresql/postgresql.conf:ro
     Pull=missing
-    Cpus=2.0
-    Memory=1G
+    PodmanArgs=--memory=1G
+    PodmanArgs=--cpus=2.0
     HealthCmd=pg_isready -U myuser -d myapp
     HealthInterval=10s
     HealthTimeout=5s
@@ -258,10 +258,10 @@ examples {
     Pull=newer
     User=999:999
     Exec=redis-server /usr/local/etc/redis/redis.conf
-    Cpus=1.0
-    Memory=512M
     ReadOnly=yes
     NoNewPrivileges=yes
+    PodmanArgs=--memory=512M
+    PodmanArgs=--cpus=1.0
     HealthCmd=redis-cli ping
     HealthInterval=10s
     HealthTimeout=3s
@@ -344,7 +344,7 @@ examples {
     BuildArg=NODE_VERSION=18
     BuildArg=BUILD_ENV=production
     ForceRm=yes
-    Rm=yes
+    PodmanArgs=--rm
     
     """
   }

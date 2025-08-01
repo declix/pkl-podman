@@ -54,10 +54,6 @@ local class ContainerSection {
     // Entry point
     entrypoint: String?
     
-    // Resource limits
-    cpus: Float?
-    memory: String?
-    
     // Security options
     securityLabelDisable: Boolean?
     readOnly: Boolean?
@@ -118,9 +114,6 @@ local class ContainerSection {
     // Userns
     userNS: String?
     
-    // PID namespace
-    pidNS: String?
-    
     // Network aliases
     networkAlias: (String|Listing<String>)?
     
@@ -131,9 +124,6 @@ local class ContainerSection {
     
     // CGroups mode
     cgroupsMode: String?
-    
-    // Containers.conf module
-    containersConfModule: String?
     
     // Expose host ports
     exposeHostPort: (String|Listing<String>)?

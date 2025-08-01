@@ -17,10 +17,10 @@ examples {
     Pull=newer
     User=999:999
     Exec=redis-server /usr/local/etc/redis/redis.conf
-    Cpus=1.0
-    Memory=512M
     ReadOnly=yes
     NoNewPrivileges=yes
+    PodmanArgs=--memory=512M
+    PodmanArgs=--cpus=1.0
     HealthCmd=redis-cli ping
     HealthInterval=10s
     HealthTimeout=3s

@@ -20,8 +20,8 @@ examples {
     Volume=postgres-data:/var/lib/postgresql/data
     Volume=/etc/postgresql/postgresql.conf:/etc/postgresql/postgresql.conf:ro
     Pull=missing
-    Cpus=2.0
-    Memory=1G
+    PodmanArgs=--memory=1G
+    PodmanArgs=--cpus=2.0
     HealthCmd=pg_isready -U myuser -d myapp
     HealthInterval=10s
     HealthTimeout=5s

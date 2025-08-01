@@ -13,7 +13,6 @@ examples {
     AutoUpdate=registry
     ConfigMap=/app/k8s/config.yaml
     ConfigMap=/app/k8s/secrets.yaml
-    ContainersConfModule=/etc/containers/test.conf
     Network=test-net
     PublishPort=8080:80
     PublishPort=9090:9090
@@ -34,6 +33,7 @@ examples {
     PodmanArgs=--log-level=info
     PodmanArgs=--replace
     PodmanArgs=--start
+    PodmanArgs=--containers-conf-module=/etc/containers/test.conf
     
     """
   }

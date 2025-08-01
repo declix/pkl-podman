@@ -14,8 +14,6 @@ local fullBuild = new Build {
         setWorkingDirectory = "/app"
         network = "host"
         pull = "always"
-        retry = 3
-        retryDelay = "5s"
         
         buildArg {
             ["NODE_VERSION"] = "18"
@@ -62,10 +60,16 @@ local fullBuild = new Build {
         globalArgs = new Listing {
             "--log-level=debug"
         }
-        rm = true
+        
         forceRm = true
-        squash = false
         tlsVerify = true
+        
+        podmanArgs {
+            "--retry=3"
+            "--retry-delay=5s"
+            "--rm"
+            "--squash=false"
+        }
     }
     
     install = new {

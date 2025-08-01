@@ -32,11 +32,7 @@ local fullKube = new Kube {
         
         logDriver = "journald"
         
-        // New official Quadlet fields
-        containersConfModule = new Listing {
-            "/etc/containers/test.conf"
-        }
-        
+        // New official Quadlet fields        
         globalArgs = new Listing {
             "--log-level=debug"
         }
@@ -55,6 +51,7 @@ local fullKube = new Kube {
             "--log-level=info"
             "--replace"
             "--start"
+            "--containers-conf-module=/etc/containers/test.conf"
         }
     }
     

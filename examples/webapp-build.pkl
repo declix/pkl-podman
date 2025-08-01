@@ -27,8 +27,11 @@ build = new {
     
     pull = "missing"
     network = "host"
-    rm = true
     forceRm = true
+    
+    podmanArgs {
+        "--rm"
+    }
 }
 
 install = new {

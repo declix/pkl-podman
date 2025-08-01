@@ -28,8 +28,8 @@ examples {
     Volume=/var/cache/go:/go/pkg/mod:Z
     Volume=/var/cache/build:/root/.cache:Z
     Target=production
-    Rm=yes
-    Squash=yes
+    PodmanArgs=--squash
+    PodmanArgs=--rm
     
     """
   }
