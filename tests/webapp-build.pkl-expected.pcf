@@ -15,11 +15,11 @@ examples {
     Environment=BUILDKIT_PROGRESS=plain
     Network=host
     Pull=missing
-    BuildArg=NODE_VERSION=18
-    BuildArg=BUILD_ENV=production
     Label=app=webapp
     Label=version=1.0.0
     Label=maintainer=devops@example.com
+    BuildArg=NODE_VERSION=18
+    BuildArg=BUILD_ENV=production
     ForceRm=yes
     Rm=yes
     

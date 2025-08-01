@@ -14,23 +14,28 @@ examples {
     SetWorkingDirectory=/app
     Environment=BUILDKIT_PROGRESS=plain
     Environment=DOCKER_BUILDKIT=1
+    AuthFile=/etc/containers/auth.json
+    Dns=8.8.8.8
+    Dns=1.1.1.1
+    DnsOption=ndots:2
+    GlobalArgs=--log-level=debug
     Network=host
     Pull=always
-    Retry=3
-    RetryDelay=5s
-    BuildArg=NODE_VERSION=18
-    BuildArg=ENV=test
     Label=app=test
     Label=version=1.0.0
     Annotation=org.example.key=value
     Arch=amd64
+    BuildArg=NODE_VERSION=18
+    BuildArg=ENV=test
     Secret=id=token,src=/run/secrets/token
     TlsVerify=yes
     ForceRm=yes
-    Rm=yes
-    Squash=no
     Volume=/cache:/cache:Z
     Target=production
+    Retry=3
+    RetryDelay=5s
+    Rm=yes
+    Squash=no
     
     """
   }

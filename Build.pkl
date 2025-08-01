@@ -20,20 +20,29 @@ local class BuildSection {
     // Build-time environment variables
     environment: Mapping<String, String>?
     
+    // Authentication file path
+    authFile: String?
+    
+    // Containers.conf module
+    containersConfModule: (String|Listing<String>)?
+    
+    // DNS settings for build
+    dns: (String|Listing<String>)?
+    dnsOption: (String|Listing<String>)?
+    dnsSearch: (String|Listing<String>)?
+    
+    // Global args
+    globalArgs: (String|Listing<String>)?
+    
+    // Group add
+    groupAdd: (String|Listing<String>)?
+    
     // Network configuration for build
     network: String?
     
     // Image pull policy
     pull: PullPolicy?
     
-    // Pull retry attempts
-    retry: UInt?
-    
-    // Pull retry delay
-    retryDelay: String?
-    
-    // Build arguments
-    buildArg: Mapping<String, String>?
     
     // Labels for the built image
     label: Mapping<String, String>?
@@ -47,38 +56,42 @@ local class BuildSection {
     // Architecture variant
     variant: String?
     
-    // Platform for multi-arch builds
+    // Platform specification
     platform: String?
+    
+    // Build arguments
+    buildArg: Mapping<String, String>?
     
     // Secret mounts for build
     secret: (String|Listing<String>)?
     
-    // SSH agent socket
-    ssh: String?
-    
     // Disable TLS verification
     tlsVerify: Boolean?
     
-    // Force rebuild
+    // Force remove intermediate containers
     forceRm: Boolean?
-    
-    // Remove intermediate containers
-    rm: Boolean?
-    
-    // Squash layers
-    squash: Boolean?
-    
-    // Build output format
-    format: String?
     
     // Volume mounts during build
     volume: (String|Listing<String>)?
     
-    // Build context URL
-    contextDir: String?
     
     // Build target stage
     target: String?
+    
+    // Additional podman build flags
+    podmanArgs: Listing<String>?
+    
+    // Pull retry (not in official quadlet spec, for compatibility)
+    retry: UInt?
+    
+    // Pull retry delay (not in official quadlet spec, for compatibility)
+    retryDelay: String?
+    
+    // Remove intermediate containers (--rm)
+    rm: Boolean?
+    
+    // Squash layers (--squash)
+    squash: Boolean?
 }
 
 local typealias PullPolicy = "always" | "missing" | "never" | "newer"

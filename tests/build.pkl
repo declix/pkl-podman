@@ -46,6 +46,22 @@ local fullBuild = new Build {
         
         arch = "amd64"
         target = "production"
+        
+        // New fields from comprehensive Build section
+        dns = new Listing {
+            "8.8.8.8"
+            "1.1.1.1"
+        }
+        
+        dnsOption = new Listing {
+            "ndots:2"
+        }
+        
+        authFile = "/etc/containers/auth.json"
+        
+        globalArgs = new Listing {
+            "--log-level=debug"
+        }
         rm = true
         forceRm = true
         squash = false

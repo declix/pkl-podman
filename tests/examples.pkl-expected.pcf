@@ -150,23 +150,23 @@ examples {
     File=./docker/Containerfile.prod
     SetWorkingDirectory=/workspace
     Pull=always
-    BuildArg=GO_VERSION=1.21
-    BuildArg=CGO_ENABLED=0
-    BuildArg=GOOS=linux
     Label=app=myapp
     Label=tier=backend
     Label=build-type=production
     Annotation=org.opencontainers.image.source=https://github.com/example/myapp
     Annotation=org.opencontainers.image.documentation=https://docs.example.com/myapp
     Platform=linux/amd64
+    BuildArg=GO_VERSION=1.21
+    BuildArg=CGO_ENABLED=0
+    BuildArg=GOOS=linux
     Secret=id=github_token,src=/run/secrets/github_token
     Secret=id=registry_auth,src=/run/secrets/registry_auth
     TlsVerify=yes
-    Rm=yes
-    Squash=yes
     Volume=/var/cache/go:/go/pkg/mod:Z
     Volume=/var/cache/build:/root/.cache:Z
     Target=production
+    Rm=yes
+    Squash=yes
     
     """
   }
@@ -351,11 +351,11 @@ examples {
     Environment=BUILDKIT_PROGRESS=plain
     Network=host
     Pull=missing
-    BuildArg=NODE_VERSION=18
-    BuildArg=BUILD_ENV=production
     Label=app=webapp
     Label=version=1.0.0
     Label=maintainer=devops@example.com
+    BuildArg=NODE_VERSION=18
+    BuildArg=BUILD_ENV=production
     ForceRm=yes
     Rm=yes
     
