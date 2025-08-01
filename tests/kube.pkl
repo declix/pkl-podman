@@ -29,38 +29,33 @@ local fullKube = new Kube {
         setWorkingDirectory = "/app"
         
         userNS = "auto"
-        uidMap = new Listing {
-            "0:100000:65536"
-        }
-        gidMap = new Listing {
-            "0:100000:65536"
-        }
-        
-        securityLabelDisable = false
-        securityLabelType = "container_t"
-        
-        volume = new Listing {
-            "/var/log/test:/var/log:Z"
-            "/data:/data:Z"
-        }
-        
-        label {
-            ["app"] = "test"
-            ["environment"] = "testing"
-        }
-        
-        annotation {
-            ["test.key"] = "test.value"
-        }
         
         logDriver = "journald"
-        logOpt = new Listing {
-            "tag=test-app"
+        
+        // New official Quadlet fields
+        containersConfModule = new Listing {
+            "/etc/containers/test.conf"
         }
         
-        downTimeout = 30
+        globalArgs = new Listing {
+            "--log-level=debug"
+        }
         
-        podmanArgs { "--log-level=info"; "--replace"; "--start" }
+        kubeDownForce = true
+        
+        // Unsupported fields moved to podmanArgs
+        podmanArgs {
+            "--uidmap=0:100000:65536"
+            "--gidmap=0:100000:65536"
+            "--security-opt=label:disable=false"
+            "--security-opt=label:type=container_t"
+            "--volume=/var/log/test:/var/log:Z"
+            "--volume=/data:/data:Z"
+            "--annotation=test.key=test.value"
+            "--log-level=info"
+            "--replace"
+            "--start"
+        }
     }
     
     install = new {

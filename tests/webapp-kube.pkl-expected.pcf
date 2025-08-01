@@ -18,15 +18,9 @@ examples {
     PublishPort=8443:443
     ExitCodePropagation=any
     WorkingDirectory=/etc/kubernetes/webapp
-    Label=app=webapp
-    Label=deployment=kubernetes
-    Label=environment=production
-    Annotation=deployment.kubernetes.io/revision=1
-    Annotation=kubectl.kubernetes.io/last-applied-configuration=webapp-config
-    Volume=/var/log/webapp:/var/log:Z
-    Volume=/etc/ssl/certs:/etc/ssl/certs:ro
     LogDriver=journald
-    DownTimeout=30
+    PodmanArgs=--volume=/var/log/webapp:/var/log:Z
+    PodmanArgs=--volume=/etc/ssl/certs:/etc/ssl/certs:ro
     
     """
   }

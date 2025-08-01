@@ -112,27 +112,14 @@ examples {
     PublishPort=9090:9090
     ExitCodePropagation=all
     UserNS=auto
-    GidMap=0:100000:65536
-    UidMap=0:100000:65536
-    SecurityLabelType=container_t
-    SecurityLabelDisable=no
-    Label=app=microservices
-    Label=stack=full
-    Label=tier=production
-    Label=monitoring=enabled
-    Annotation=app.kubernetes.io/name=microservices-stack
-    Annotation=app.kubernetes.io/version=2.1.0
-    Annotation=app.kubernetes.io/component=backend
-    Annotation=monitoring.coreos.com/scrape=true
-    Volume=postgres-data:/var/lib/postgresql/data:Z
-    Volume=redis-data:/data:Z
-    Volume=/app/logs:/var/log/app:Z
-    Volume=/app/uploads:/uploads:Z
-    LogDriver=k8s-file
-    LogOpt=path=/var/log/pods
-    LogOpt=max-size=100m
-    DownTimeout=60
+    LogDriver=journald
     SetWorkingDirectory=/app/k8s
+    PodmanArgs=--uidmap=0:100000:65536
+    PodmanArgs=--gidmap=0:100000:65536
+    PodmanArgs=--volume=postgres-data:/var/lib/postgresql/data:Z
+    PodmanArgs=--volume=redis-data:/data:Z
+    PodmanArgs=--volume=/app/logs:/var/log/app:Z
+    PodmanArgs=--volume=/app/uploads:/uploads:Z
     
     """
   }
@@ -380,15 +367,9 @@ examples {
     PublishPort=8443:443
     ExitCodePropagation=any
     WorkingDirectory=/etc/kubernetes/webapp
-    Label=app=webapp
-    Label=deployment=kubernetes
-    Label=environment=production
-    Annotation=deployment.kubernetes.io/revision=1
-    Annotation=kubectl.kubernetes.io/last-applied-configuration=webapp-config
-    Volume=/var/log/webapp:/var/log:Z
-    Volume=/etc/ssl/certs:/etc/ssl/certs:ro
     LogDriver=journald
-    DownTimeout=30
+    PodmanArgs=--volume=/var/log/webapp:/var/log:Z
+    PodmanArgs=--volume=/etc/ssl/certs:/etc/ssl/certs:ro
     
     """
   }

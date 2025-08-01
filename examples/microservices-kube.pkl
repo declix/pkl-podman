@@ -33,46 +33,18 @@ kube = new {
     
     // User namespace for security
     userNS = "auto"
-    uidMap = new Listing {
-        "0:100000:65536"
-    }
-    gidMap = new Listing {
-        "0:100000:65536"
-    }
     
-    // Persistent volumes
-    volume = new Listing {
-        "postgres-data:/var/lib/postgresql/data:Z"
-        "redis-data:/data:Z"
-        "/app/logs:/var/log/app:Z"
-        "/app/uploads:/uploads:Z"
+    // Use podmanArgs for unsupported Quadlet fields
+    podmanArgs {
+        "--uidmap=0:100000:65536"
+        "--gidmap=0:100000:65536"
+        "--volume=postgres-data:/var/lib/postgresql/data:Z"
+        "--volume=redis-data:/data:Z"
+        "--volume=/app/logs:/var/log/app:Z"
+        "--volume=/app/uploads:/uploads:Z"
     }
     
-    // Security configuration
-    securityLabelDisable = false
-    securityLabelType = "container_t"
-    
-    label {
-        ["app"] = "microservices"
-        ["stack"] = "full"
-        ["tier"] = "production"
-        ["monitoring"] = "enabled"
-    }
-    
-    annotation {
-        ["app.kubernetes.io/name"] = "microservices-stack"
-        ["app.kubernetes.io/version"] = "2.1.0"
-        ["app.kubernetes.io/component"] = "backend"
-        ["monitoring.coreos.com/scrape"] = "true"
-    }
-    
-    logDriver = "k8s-file"
-    logOpt = new Listing {
-        "path=/var/log/pods"
-        "max-size=100m"
-    }
-    
-    downTimeout = 60
+    logDriver = "journald"
 }
 
 install = new {

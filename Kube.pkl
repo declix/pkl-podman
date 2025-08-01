@@ -17,6 +17,9 @@ local class KubeSection {
     // ConfigMap YAML paths
     configMap: (String|Listing<String>)?
     
+    // Containers.conf module
+    containersConfModule: (String|Listing<String>)?
+    
     // Network configuration
     network: String?
     
@@ -26,40 +29,21 @@ local class KubeSection {
     // Exit code propagation policy
     exitCodePropagation: ExitCodePolicy?
     
-    // Working directory for relative paths
+    // Global args
+    globalArgs: (String|Listing<String>)?
+    
+    // Force down
+    kubeDownForce: Boolean?
+    
+    // Working directory for relative paths (deprecated, use setWorkingDirectory)
     workingDirectory: String?
     
     // User namespace mapping
     userNS: String?
     
-    // Group ID mapping
-    gidMap: (String|Listing<String>)?
-    
-    // User ID mapping
-    uidMap: (String|Listing<String>)?
-    
-    // Security labels
-    securityLabelType: String?
-    securityLabelLevel: String?
-    securityLabelDisable: Boolean?
-    
-    // Labels for the deployment
-    label: Mapping<String, String>?
-    
-    // Annotations for the deployment
-    annotation: Mapping<String, String>?
-    
-    // Volume mounts
-    volume: (String|Listing<String>)?
-    
     // Log driver
     logDriver: String?
     
-    // Log options
-    logOpt: (String|Listing<String>)?
-    
-    // Down timeout
-    downTimeout: UInt?
     
     // Set working directory
     setWorkingDirectory: String?
@@ -68,5 +52,5 @@ local class KubeSection {
     podmanArgs: Listing<String>?
 }
 
-local typealias AutoUpdatePolicy = "registry" | "local"
+local typealias AutoUpdatePolicy = "registry" | "local" | String
 local typealias ExitCodePolicy = "all" | "any" | "none"

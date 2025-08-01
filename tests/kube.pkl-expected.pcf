@@ -13,25 +13,24 @@ examples {
     AutoUpdate=registry
     ConfigMap=/app/k8s/config.yaml
     ConfigMap=/app/k8s/secrets.yaml
+    ContainersConfModule=/etc/containers/test.conf
     Network=test-net
     PublishPort=8080:80
     PublishPort=9090:9090
     ExitCodePropagation=any
+    GlobalArgs=--log-level=debug
+    KubeDownForce=yes
     WorkingDirectory=/app/k8s
     UserNS=auto
-    GidMap=0:100000:65536
-    UidMap=0:100000:65536
-    SecurityLabelType=container_t
-    SecurityLabelDisable=no
-    Label=app=test
-    Label=environment=testing
-    Annotation=test.key=test.value
-    Volume=/var/log/test:/var/log:Z
-    Volume=/data:/data:Z
     LogDriver=journald
-    LogOpt=tag=test-app
-    DownTimeout=30
     SetWorkingDirectory=/app
+    PodmanArgs=--uidmap=0:100000:65536
+    PodmanArgs=--gidmap=0:100000:65536
+    PodmanArgs=--security-opt=label:disable=false
+    PodmanArgs=--security-opt=label:type=container_t
+    PodmanArgs=--volume=/var/log/test:/var/log:Z
+    PodmanArgs=--volume=/data:/data:Z
+    PodmanArgs=--annotation=test.key=test.value
     PodmanArgs=--log-level=info
     PodmanArgs=--replace
     PodmanArgs=--start
