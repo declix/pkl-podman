@@ -22,7 +22,7 @@ local fullNetwork = new Network {
             "8.8.8.8"
         }
         
-        option = new Listing {
+        options = new Listing {
             "com.docker.network.bridge.name=testbr0"
             "com.docker.network.driver.mtu=1500"
         }

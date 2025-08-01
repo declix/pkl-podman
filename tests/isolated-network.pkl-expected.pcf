@@ -19,8 +19,8 @@ examples {
     Gateway=172.20.0.1
     Label=tier=isolated
     Label=security=high
-    Option=com.docker.network.bridge.name=isolated0
-    Option=com.docker.network.driver.mtu=1450
+    Options=com.docker.network.bridge.name=isolated0
+    Options=com.docker.network.driver.mtu=1450
     
     """
   }

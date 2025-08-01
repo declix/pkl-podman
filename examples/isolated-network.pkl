@@ -24,7 +24,7 @@ network = new {
     }
     
     // Driver options
-    option = new Listing {
+    options = new Listing {
         "com.docker.network.bridge.name=isolated0"
         "com.docker.network.driver.mtu=1450"
     }

@@ -26,9 +26,6 @@ local class NetworkSection {
     // Enable IPv6 networking
     ipv6: Boolean?
     
-    // Delete network when service stops
-    networkDeleteOnStop: Boolean?
-    
     // Gateway address
     gateway: String?
     
@@ -41,9 +38,18 @@ local class NetworkSection {
     // Labels
     label: Mapping<String, String>?
     
-    // Driver options
-    option: (String|Listing<String>)?
+    // Driver options  
+    options: (String|Listing<String>)?
     
     // Disable DNS resolution
     disableDNS: Boolean?
+    
+    // Containers.conf module
+    containersConfModule: (String|Listing<String>)?
+    
+    // Global args
+    globalArgs: (String|Listing<String>)?
+    
+    // Additional podman network create flags
+    podmanArgs: Listing<String>?
 }
