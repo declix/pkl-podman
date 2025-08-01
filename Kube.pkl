@@ -65,7 +65,7 @@ local class KubeSection {
     setWorkingDirectory: String?
     
     // Additional podman kube play options
-    podmanArgs: String?
+    podmanArgs: Listing<String>?
 }
 
 local typealias AutoUpdatePolicy = "registry" | "local"

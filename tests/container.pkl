@@ -66,7 +66,7 @@ local full = new Container {
         readOnly = true
         noNewPrivileges = true
         
-        podmanArgs = "--rm"
+        podmanArgs { "--rm"; "--privileged"; "--cap-add=SYS_ADMIN" }
         
         healthCmd = "echo ok"
         healthInterval = 30.s

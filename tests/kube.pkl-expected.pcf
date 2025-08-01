@@ -32,6 +32,9 @@ examples {
     LogOpt=tag=test-app
     DownTimeout=30
     SetWorkingDirectory=/app
+    PodmanArgs=--log-level=info
+    PodmanArgs=--replace
+    PodmanArgs=--start
     
     """
   }

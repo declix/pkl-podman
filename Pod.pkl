@@ -62,7 +62,7 @@ local class PodSection {
     annotation: Mapping<String, String>?
     
     // Pod-specific options
-    podmanArgs: String?
+    podmanArgs: Listing<String>?
     
     // Share namespaces
     shareNet: Boolean?

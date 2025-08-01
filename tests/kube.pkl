@@ -59,6 +59,8 @@ local fullKube = new Kube {
         }
         
         downTimeout = 30
+        
+        podmanArgs { "--log-level=info"; "--replace"; "--start" }
     }
     
     install = new {

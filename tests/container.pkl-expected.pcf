@@ -46,6 +46,8 @@ examples {
     ReadOnly=yes
     NoNewPrivileges=yes
     PodmanArgs=--rm
+    PodmanArgs=--privileged
+    PodmanArgs=--cap-add=SYS_ADMIN
     HealthCmd=echo ok
     HealthInterval=30s
     HealthTimeout=3s

@@ -61,7 +61,7 @@ local class ContainerSection {
     noNewPrivileges: Boolean?
     
     // Additional podman run flags
-    podmanArgs: String?
+    podmanArgs: Listing<String>?
     
     // Health check
     healthCmd: String?

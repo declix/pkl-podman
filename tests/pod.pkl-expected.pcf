@@ -30,6 +30,8 @@ examples {
     Label=app=test
     Label=environment=testing
     Annotation=test.key=test.value
+    PodmanArgs=--log-level=debug
+    PodmanArgs=--cgroup-manager=systemd
     ShareNet=yes
     ShareIPC=yes
     ShareUTS=no
