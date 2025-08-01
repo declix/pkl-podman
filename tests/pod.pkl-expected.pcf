@@ -17,26 +17,24 @@ examples {
     Dns=8.8.4.4
     DnsOption=ndots:2
     DnsSearch=example.com
-    Hostname=test.local
-    ExitPolicy=stop
     Volume=/var/log/test:/var/log:Z
     UserNS=keep-id
     GidMap=0:100000:65536
     UidMap=0:100000:65536
     NetworkAlias=test-alias
     AddHost=host1:192.168.1.1
-    SecurityLabelType=container_t
-    SecurityLabelDisable=no
-    Label=app=test
-    Label=environment=testing
-    Annotation=test.key=test.value
     PodmanArgs=--log-level=debug
     PodmanArgs=--cgroup-manager=systemd
-    ShareNet=yes
-    ShareIPC=yes
-    ShareUTS=no
-    SharePID=no
-    InfraImage=registry.redhat.io/ubi8/pause:latest
+    PodmanArgs=--hostname=test.local
+    PodmanArgs=--exit-policy=stop
+    PodmanArgs=--security-opt=label:disable=false
+    PodmanArgs=--security-opt=label:type=container_t
+    PodmanArgs=--label=app=test
+    PodmanArgs=--label=environment=testing
+    PodmanArgs=--annotation=test.key=test.value
+    PodmanArgs=--share=net
+    PodmanArgs=--share=ipc
+    PodmanArgs=--infra-image=registry.redhat.io/ubi8/pause:latest
     
     """
   }

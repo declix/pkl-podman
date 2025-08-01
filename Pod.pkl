@@ -26,12 +26,6 @@ local class PodSection {
     // DNS search domains
     dnsSearch: (String|Listing<String>)?
     
-    // Hostname for containers in the pod
-    hostname: String?
-    
-    // Exit policy when last container exits
-    exitPolicy: ExitPolicy?
-    
     // Volume mounts for the pod
     volume: (String|Listing<String>)?
     
@@ -50,30 +44,28 @@ local class PodSection {
     // Add host entries
     addHost: (String|Listing<String>)?
     
-    // Security labels
-    securityLabelType: String?
-    securityLabelLevel: String?
-    securityLabelDisable: Boolean?
+    // IP addresses
+    ip: String?
+    ip6: String?
     
-    // Labels for the pod
-    label: Mapping<String, String>?
+    // Shared memory size
+    shmSize: String?
     
-    // Annotations for the pod
-    annotation: Mapping<String, String>?
+    // Sub GID mapping
+    subGIDMap: String?
+    
+    // Sub UID mapping  
+    subUIDMap: String?
+    
+    // Service name override
+    serviceName: String?
+    
+    // Containers.conf module
+    containersConfModule: (String|Listing<String>)?
+    
+    // Global args
+    globalArgs: (String|Listing<String>)?
     
     // Pod-specific options
     podmanArgs: Listing<String>?
-    
-    // Share namespaces
-    shareNet: Boolean?
-    shareIPC: Boolean?
-    shareUTS: Boolean?
-    sharePID: Boolean?
-    
-    // Infra container configuration
-    infraImage: String?
-    infraCommand: String?
-    infraName: String?
 }
-
-local typealias ExitPolicy = "continue" | "stop"

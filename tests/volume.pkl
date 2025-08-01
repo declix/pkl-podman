@@ -20,7 +20,7 @@ local postgresVolume = new Volume {
             ["env"] = "development"
         }
         
-        option = new Listing {
+        options = new Listing {
             "type=bind"
             "bind-propagation=shared"
         }

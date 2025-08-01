@@ -16,8 +16,8 @@ examples {
     Copy=yes
     Label=app=test
     Label=env=development
-    Option=type=bind
-    Option=bind-propagation=shared
+    Options=type=bind
+    Options=bind-propagation=shared
     
     """
   }

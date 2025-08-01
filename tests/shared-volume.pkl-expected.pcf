@@ -15,8 +15,8 @@ examples {
     Group=1000
     Label=app=shared
     Label=tier=storage
-    Option=type=tmpfs
-    Option=tmpfs-size=1G
+    Options=type=tmpfs
+    Options=tmpfs-size=1G
     
     """
   }

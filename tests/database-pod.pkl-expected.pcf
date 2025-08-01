@@ -17,8 +17,6 @@ examples {
     Dns=10.0.0.1
     DnsSearch=internal.example.com
     DnsSearch=db.example.com
-    Hostname=db-cluster.internal
-    ExitPolicy=continue
     Volume=postgres-data:/var/lib/postgresql/data:Z
     Volume=redis-data:/data:Z
     Volume=/etc/database/config:/etc/config:ro
@@ -28,19 +26,19 @@ examples {
     NetworkAlias=postgres.db
     NetworkAlias=redis.db
     NetworkAlias=primary.db
-    SecurityLabelType=container_t
-    SecurityLabelDisable=no
-    Label=app=database
-    Label=tier=data
-    Label=security=high
-    Label=backup=enabled
-    Annotation=backup.schedule=0 2 * * *
-    Annotation=monitoring.enabled=true
-    ShareNet=yes
-    ShareIPC=no
-    ShareUTS=yes
-    SharePID=no
-    InfraImage=registry.redhat.io/ubi8/pause:latest
+    PodmanArgs=--hostname=db-cluster.internal
+    PodmanArgs=--exit-policy=continue
+    PodmanArgs=--security-opt=label:disable=false
+    PodmanArgs=--security-opt=label:type=container_t
+    PodmanArgs=--label=app=database
+    PodmanArgs=--label=tier=data
+    PodmanArgs=--label=security=high
+    PodmanArgs=--label=backup=enabled
+    PodmanArgs=--annotation=backup.schedule=0 2 * * *
+    PodmanArgs=--annotation=monitoring.enabled=true
+    PodmanArgs=--share=net
+    PodmanArgs=--share=uts
+    PodmanArgs=--infra-image=registry.redhat.io/ubi8/pause:latest
     
     """
   }

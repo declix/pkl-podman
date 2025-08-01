@@ -15,15 +15,15 @@ examples {
     PublishPort=8443:443
     Dns=8.8.8.8
     Dns=8.8.4.4
-    Hostname=webapp.local
-    ExitPolicy=stop
     Volume=/var/log/webapp:/var/log:Z
     Volume=/etc/ssl/certs:/etc/ssl/certs:ro
-    Label=app=webapp
-    Label=tier=web
-    Label=environment=production
-    ShareNet=yes
-    ShareIPC=yes
+    PodmanArgs=--hostname=webapp.local
+    PodmanArgs=--exit-policy=stop
+    PodmanArgs=--label=app=webapp
+    PodmanArgs=--label=tier=web
+    PodmanArgs=--label=environment=production
+    PodmanArgs=--share=net
+    PodmanArgs=--share=ipc
     
     """
   }

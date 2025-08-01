@@ -33,5 +33,17 @@ local class VolumeSection {
     label: Mapping<String, String>?
     
     // Driver options
-    option: (String|Listing<String>)?
+    options: (String|Listing<String>)?
+    
+    // Filesystem type
+    type: String?
+    
+    // Containers.conf module
+    containersConfModule: (String|Listing<String>)?
+    
+    // Global args
+    globalArgs: (String|Listing<String>)?
+    
+    // Additional podman volume create flags
+    podmanArgs: Listing<String>?
 }

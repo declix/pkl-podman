@@ -15,8 +15,7 @@ pod = new {
         "6379:6379"
     }
     
-    hostname = "db-cluster.internal"
-    exitPolicy = "continue"
+    // Security configuration and other removed fields moved to podmanArgs
     
     // Custom DNS configuration
     dns = "10.0.0.1"
@@ -48,30 +47,22 @@ pod = new {
         "primary.db"
     }
     
-    // Security configuration
-    securityLabelDisable = false
-    securityLabelType = "container_t"
-    
-    label {
-        ["app"] = "database"
-        ["tier"] = "data"
-        ["security"] = "high"
-        ["backup"] = "enabled"
+    podmanArgs {
+        "--hostname=db-cluster.internal"
+        "--exit-policy=continue"
+        "--security-opt=label:disable=false"
+        "--security-opt=label:type=container_t"
+        "--label=app=database"
+        "--label=tier=data"
+        "--label=security=high"
+        "--label=backup=enabled"
+        "--annotation=backup.schedule=0 2 * * *"
+        "--annotation=monitoring.enabled=true"
+        "--share=net"
+        "--share=uts"
+        "--infra-image=registry.redhat.io/ubi8/pause:latest"
     }
     
-    annotation {
-        ["backup.schedule"] = "0 2 * * *"
-        ["monitoring.enabled"] = "true"
-    }
-    
-    // Share specific namespaces
-    shareNet = true
-    shareIPC = false
-    shareUTS = true
-    sharePID = false
-    
-    // Custom infra container
-    infraImage = "registry.redhat.io/ubi8/pause:latest"
 }
 
 install = new {

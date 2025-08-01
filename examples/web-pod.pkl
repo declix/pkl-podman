@@ -14,9 +14,6 @@ pod = new {
         "8443:443"
     }
     
-    hostname = "webapp.local"
-    exitPolicy = "stop"
-    
     dns = new Listing {
         "8.8.8.8"
         "8.8.4.4"
@@ -27,14 +24,15 @@ pod = new {
         "/etc/ssl/certs:/etc/ssl/certs:ro"
     }
     
-    label {
-        ["app"] = "webapp"
-        ["tier"] = "web"
-        ["environment"] = "production"
+    podmanArgs {
+        "--hostname=webapp.local"
+        "--exit-policy=stop"
+        "--label=app=webapp"
+        "--label=tier=web"
+        "--label=environment=production"
+        "--share=net"
+        "--share=ipc"
     }
-    
-    shareNet = true
-    shareIPC = true
 }
 
 install = new {

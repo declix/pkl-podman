@@ -11,8 +11,6 @@ local fullPod = new Pod {
     pod = new {
         podName = "test-pod"
         network = "bridge"
-        hostname = "test.local"
-        exitPolicy = "stop"
         
         publishPort = new Listing {
             "8080:80"
@@ -52,26 +50,20 @@ local fullPod = new Pod {
             "0:100000:65536"
         }
         
-        securityLabelDisable = false
-        securityLabelType = "container_t"
-        
-        label {
-            ["app"] = "test"
-            ["environment"] = "testing"
+        podmanArgs { 
+            "--log-level=debug" 
+            "--cgroup-manager=systemd"
+            "--hostname=test.local"
+            "--exit-policy=stop"
+            "--security-opt=label:disable=false"
+            "--security-opt=label:type=container_t"
+            "--label=app=test"
+            "--label=environment=testing"
+            "--annotation=test.key=test.value"
+            "--share=net"
+            "--share=ipc"
+            "--infra-image=registry.redhat.io/ubi8/pause:latest"
         }
-        
-        annotation {
-            ["test.key"] = "test.value"
-        }
-        
-        shareNet = true
-        shareIPC = true
-        shareUTS = false
-        sharePID = false
-        
-        infraImage = "registry.redhat.io/ubi8/pause:latest"
-        
-        podmanArgs { "--log-level=debug"; "--cgroup-manager=systemd" }
     }
     
     install = new {
