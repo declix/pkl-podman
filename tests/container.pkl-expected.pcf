@@ -27,6 +27,7 @@ examples {
     ContainerName=test
     Environment=FOO=bar
     Environment=BAZ=qux
+    EnvironmentHost=yes
     PublishPort=8080:80
     PublishPort=8443:443
     Volume=/host/path:/container/path
@@ -55,6 +56,8 @@ examples {
     HealthStartPeriod=10s
     LogDriver=journald
     Timezone=America/New_York
+    LogOpt=path=/var/log/container.log
+    LogOpt=max-size=10MB
     Secret=my-secret
     Secret=other-secret,target=/run/secrets/custom
     Device=/dev/fuse
@@ -77,6 +80,9 @@ examples {
     PidNS=host
     NetworkAlias=test-alias
     NetworkAlias=another-alias
+    AutoUpdate=registry
+    Notify=yes
+    RunInit=yes
     
     [Service]
     Type=notify

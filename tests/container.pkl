@@ -77,6 +77,16 @@ local full = new Container {
         logDriver = "journald"
         timezone = "America/New_York"
         
+        // New fields from comprehensive Container section
+        autoUpdate = "registry"
+        environmentHost = true
+        logOpt = new Listing {
+            "path=/var/log/container.log"
+            "max-size=10MB"
+        }
+        runInit = true
+        notify = true
+        
         secret = new Listing {
             "my-secret"
             "other-secret,target=/run/secrets/custom"

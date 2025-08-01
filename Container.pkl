@@ -21,6 +21,9 @@ local class ContainerSection {
     // Environment file
     environmentFile: String?
     
+    // Use host environment in container
+    environmentHost: Boolean?
+    
     // Expose ports
     publishPort: (String|Listing<String>)?
     
@@ -76,6 +79,9 @@ local class ContainerSection {
     // Timezone
     timezone: String?
     
+    // Logging options
+    logOpt: (String|Listing<String>)?
+    
     // Secrets
     secret: (String|Listing<String>)?
     
@@ -117,6 +123,99 @@ local class ContainerSection {
     
     // Network aliases
     networkAlias: (String|Listing<String>)?
+    
+    // Additional missing fields from podman-systemd.unit(5)
+    
+    // AutoUpdate policy
+    autoUpdate: AutoUpdatePolicy?
+    
+    // CGroups mode
+    cgroupsMode: String?
+    
+    // Containers.conf module
+    containersConfModule: String?
+    
+    // Expose host ports
+    exposeHostPort: (String|Listing<String>)?
+    
+    // GID mapping
+    gidMap: (String|Listing<String>)?
+    
+    // Global args
+    globalArgs: (String|Listing<String>)?
+    
+    // Group ID
+    group: String?
+    
+    // Additional health check options
+    healthLogDestination: String?
+    healthMaxLogCount: UInt?
+    healthMaxLogSize: String?
+    healthOnFailure: String?
+    healthStartupCmd: String?
+    healthStartupInterval: Duration?
+    healthStartupRetries: UInt?
+    healthStartupSuccess: UInt?
+    healthStartupTimeout: Duration?
+    
+    // IP addresses
+    ip: String?
+    ip6: String?
+    
+    // Security options
+    mask: (String|Listing<String>)?
+    
+    // Mount options
+    mount: (String|Listing<String>)?
+    
+    // Notify
+    notify: Boolean?
+    
+    // PID limits
+    pidsLimit: UInt?
+    
+    // Pod reference
+    pod: String?
+    
+    // Read-only tmpfs
+    readOnlyTmpfs: Boolean?
+    
+    // Rootfs
+    rootfs: String?
+    
+    // Run init
+    runInit: Boolean?
+    
+    // Seccomp profile
+    seccompProfile: String?
+    
+    // Security label options
+    securityLabelFileType: String?
+    securityLabelLevel: String?
+    securityLabelNested: Boolean?
+    securityLabelType: String?
+    
+    // Shared memory size
+    shmSize: String?
+    
+    // Start with pod
+    startWithPod: Boolean?
+    
+    // Stop signal
+    stopSignal: String?
+    
+    // Stop timeout
+    stopTimeout: UInt?
+    
+    // Sub GID/UID mapping
+    subGIDMap: String?
+    subUIDMap: String?
+    
+    // UID mapping
+    uidMap: (String|Listing<String>)?
+    
+    // Unmask
+    unmask: (String|Listing<String>)?
 }
 
 // https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html
@@ -141,5 +240,6 @@ local class ServiceSection {
 }
 
 local typealias PullPolicy = "always" | "missing" | "never" | "newer"
+local typealias AutoUpdatePolicy = "registry" | "local" | "disabled"
 local typealias ServiceType = "simple" | "exec" | "forking" | "oneshot" | "notify"
 local typealias RestartPolicy = "no" | "always" | "on-success" | "on-failure" | "on-abnormal" | "on-abort" | "on-watchdog"
