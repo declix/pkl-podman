@@ -1,0 +1,76 @@
+amends "pkl:test"
+
+import "../Image.pkl"
+
+local redisImage = new Image {
+    unit = new {
+        description = "Redis Image"
+        after = "network-online.target"
+    }
+    
+    image = new {
+        image = "quay.io/redis/redis:latest"
+        imageTag = "redis-latest"
+        arch = "amd64"
+        os = "linux"
+        tlsVerify = true
+        
+        globalArgs = new Listing {
+            "--log-level=info"
+        }
+    }
+    
+    install = new {
+        wantedBy = "multi-user.target"
+    }
+}
+
+local simpleImage = new Image {
+    image = new {
+        image = "docker.io/library/alpine:latest"
+    }
+}
+
+local authenticatedImage = new Image {
+    unit = new {
+        description = "Private Registry Image"
+    }
+    
+    image = new {
+        image = "private.registry.com/myapp:v1.0.0"
+        authFile = "/etc/containers/auth.json"
+        certDir = "/etc/containers/certs.d"
+        creds = "myuser:mypassword"
+        tlsVerify = false
+        
+        containersConfModule = new Listing {
+            "/etc/containers/custom.conf"
+        }
+    }
+}
+
+local allTagsImage = new Image {
+    image = new {
+        image = "docker.io/library/nginx"
+        allTags = true
+        variant = "arm64/v8"
+    }
+}
+
+examples {
+    ["full image quadlet"] {
+        redisImage.output.text
+    }
+    
+    ["simple image quadlet"] {
+        simpleImage.output.text
+    }
+    
+    ["authenticated image quadlet"] {
+        authenticatedImage.output.text
+    }
+    
+    ["all tags image quadlet"] {
+        allTagsImage.output.text
+    }
+}

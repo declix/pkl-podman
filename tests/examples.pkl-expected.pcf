@@ -238,6 +238,44 @@ examples {
     
     """
   }
+  ["../examples/private-registry-image.pkl"] {
+    """
+    privateApp:
+      unit:
+        description: Private application image
+        wants: network-online.target
+        after: network-online.target
+      install:
+        wantedBy: multi-user.target
+      image:
+        image: private.company.com/apps/webapp:v2.1.0
+        imageTag: webapp-v2.1.0
+        arch: amd64
+        authFile: /etc/containers/registries/auth.json
+        certDir: /etc/containers/registries/certs.d
+        globalArgs:
+        - --log-level=info
+        - --pull-policy=missing
+        os: linux
+        tlsVerify: true
+    
+    """
+  }
+  ["../examples/redis-image.pkl"] {
+    """
+    redis:
+      unit:
+        description: Redis container image
+        after: network-online.target
+      install:
+        wantedBy: multi-user.target
+      image:
+        image: docker.io/library/redis:7-alpine
+        imageTag: redis-7-alpine
+        tlsVerify: true
+    
+    """
+  }
   ["../examples/redis.pkl"] {
     """
     [Unit]

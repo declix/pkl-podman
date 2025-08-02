@@ -8,6 +8,7 @@ import "Volume.pkl" as VolumeModule
 import "Network.pkl" as NetworkModule
 import "Build.pkl" as BuildModule
 import "Kube.pkl" as KubeModule
+import "Image.pkl" as ImageModule
 
 // Re-export all types
 typealias Container = ContainerModule
@@ -16,3 +17,4 @@ typealias Volume = VolumeModule
 typealias Network = NetworkModule
 typealias Build = BuildModule
 typealias Kube = KubeModule
+typealias Image = ImageModule

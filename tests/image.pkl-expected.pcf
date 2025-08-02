@@ -1,0 +1,52 @@
+examples {
+  ["full image quadlet"] {
+    """
+    [Unit]
+    Description=Redis Image
+    After=network-online.target
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Image]
+    Image=quay.io/redis/redis:latest
+    ImageTag=redis-latest
+    Arch=amd64
+    GlobalArgs=--log-level=info
+    Os=linux
+    TlsVerify=yes
+    
+    """
+  }
+  ["simple image quadlet"] {
+    """
+    [Image]
+    Image=docker.io/library/alpine:latest
+    
+    """
+  }
+  ["authenticated image quadlet"] {
+    """
+    [Unit]
+    Description=Private Registry Image
+    
+    [Image]
+    Image=private.registry.com/myapp:v1.0.0
+    AuthFile=/etc/containers/auth.json
+    CertDir=/etc/containers/certs.d
+    ContainersConfModule=/etc/containers/custom.conf
+    Creds=myuser:mypassword
+    TlsVerify=no
+    
+    """
+  }
+  ["all tags image quadlet"] {
+    """
+    [Image]
+    Image=docker.io/library/nginx
+    AllTags=yes
+    Variant=arm64/v8
+    
+    """
+  }
+}

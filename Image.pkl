@@ -1,0 +1,52 @@
+module declix.podman.Image
+
+extends "@pkl-systemd/Unit.pkl"
+
+unit: UnitSection?
+install: InstallSection?
+image: ImageSection
+
+// https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html
+local class ImageSection {
+    // The image to pull (required)
+    image: String
+    
+    // Use this name when resolving .image references
+    imageTag: String?
+    
+    // All tagged images in the repository are pulled
+    allTags: Boolean?
+    
+    // Override the architecture of the image to be pulled
+    arch: String?
+    
+    // Path of the authentication file
+    authFile: String?
+    
+    // Use certificates at path to connect to the registry
+    certDir: String?
+    
+    // Containers.conf module
+    containersConfModule: (String|Listing<String>)?
+    
+    // Username and password for authentication
+    creds: String?
+    
+    // Key and passphrase for decryption of images
+    decryptionKey: String?
+    
+    // Global args passed directly between podman and image
+    globalArgs: (String|Listing<String>)?
+    
+    // Override the OS of the image to be pulled
+    os: String?
+    
+    // Additional podman image pull flags
+    podmanArgs: Listing<String>?
+    
+    // Verify TLS certificates
+    tlsVerify: Boolean?
+    
+    // Override the variant of the image to be pulled
+    variant: String?
+}
