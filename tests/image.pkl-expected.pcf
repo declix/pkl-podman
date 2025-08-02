@@ -49,4 +49,12 @@ examples {
     
     """
   }
+  ["string args image quadlet"] {
+    """
+    [Image]
+    Image=quay.io/alpine/alpine:latest
+    PodmanArgs=--quiet
+    
+    """
+  }
 }

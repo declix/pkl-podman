@@ -57,6 +57,13 @@ local allTagsImage = new Image {
     }
 }
 
+local stringArgsImage = new Image {
+    image = new {
+        image = "quay.io/alpine/alpine:latest"
+        podmanArgs = "--quiet"
+    }
+}
+
 examples {
     ["full image quadlet"] {
         redisImage.output.text
@@ -72,5 +79,9 @@ examples {
     
     ["all tags image quadlet"] {
         allTagsImage.output.text
+    }
+    
+    ["string args image quadlet"] {
+        stringArgsImage.output.text
     }
 }

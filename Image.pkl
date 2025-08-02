@@ -42,7 +42,7 @@ local class ImageSection {
     os: String?
     
     // Additional podman image pull flags
-    podmanArgs: Listing<String>?
+    podmanArgs: (String|Listing<String>)?
     
     // Verify TLS certificates
     tlsVerify: Boolean?
